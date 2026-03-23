@@ -1,175 +1,184 @@
-# DragonStack / 龙栈
+# DragonStack 2.0 / 龙栈 2.0
 
-> **A virtual engineering team for Chinese AI developers.**  
-> **为中国 AI 开发者打造的虚拟工程团队。**
+> **AI-powered development workflow for Chinese developers**  
+> **为中国开发者打造的 AI 驱动开发工作流**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Platform: Trae](https://img.shields.io/badge/Platform-Trae-blue.svg)](https://www.trae.ai/)
-[![Platform: Cursor](https://img.shields.io/badge/Platform-Cursor-green.svg)](https://cursor.sh/)
-
----
-
-## 🐉 What is DragonStack? / 什么是龙栈？
-
-**DragonStack** is an opinionated AI-powered development workflow designed for the Chinese developer ecosystem. It transforms your AI coding assistant into a virtual engineering team with structured processes, safety guardrails, and quality assurance.
-
-**龙栈**是一套专为中国开发者生态设计的 AI 驱动开发工作流。它将你的 AI 编程助手转化为拥有结构化流程、安全防护和质量保障的虚拟工程团队。
-
-Inspired by [gstack](https://github.com/garrytan/gstack) but rebuilt for:
-- 国内网络环境 (Chinese network environment)
-- 国产 AI 平台 (Domestic AI platforms)
-- 中文开发者习惯 (Chinese developer workflows)
+[![Version](https://img.shields.io/badge/version-2.0-blue.svg)](https://github.com/OasysCore/DragonStack-)
+[![Platform](https://img.shields.io/badge/platform-Trae%20%7C%20Cursor-green.svg)](https://www.trae.ai/)
 
 ---
 
-## 🎯 Core Philosophy / 核心理念
+## 🚀 快速开始 (30秒)
 
-```
-Think → Plan → Build → Review → Test → Ship → Reflect
-思考 → 规划 → 构建 → 审查 → 测试 → 发布 → 复盘
-```
-
-Each skill feeds into the next. Nothing falls through the cracks.
-
-每个技能的输出自动成为下一个技能的输入。确保没有遗漏。
-
----
-
-## 🚀 Quick Start / 快速开始
-
-### Prerequisites / 前置要求
-
-- [Trae](https://www.trae.ai/) (Recommended / 推荐) or [Cursor](https://cursor.sh/) (Advanced / 进阶)
-- Git
-- Node.js 18+
-
-### Installation / 安装
+### 第一步：安装龙栈
 
 ```bash
-# Clone the repository
 git clone https://github.com/OasysCore/DragonStack-.git ~/.dragonstack
+```
 
-# Run setup
-cd ~/.dragonstack && ./setup.sh
+### 第二步：创建项目（交互式）
 
-# Add to your project
-cp -Rf ~/.dragonstack ./.dragonstack
+```bash
+~/.dragonstack/scripts/onboard.sh
+```
+
+按照提示回答问题：
+- 项目名称？
+- 项目目的？
+- 技术栈？
+- AI 助手？
+
+✅ 完成！项目已创建并配置好龙栈。
+
+### 第三步：开始使用
+
+```bash
+cd your-project
+./dragonstack
 ```
 
 ---
 
-## 📚 Available Skills / 可用技能
+## 🎯 核心技能
 
-### Core Skills / 核心技能
-
-| Skill / 技能 | Description / 描述 | Command / 命令 |
-|-------------|-------------------|---------------|
-| **Brainstorm** / 头脑风暴 | Product ideation with 5W1H analysis | `/brainstorm` |
-| **CEO Review** / CEO 审视 | Scope control and strategic alignment | `/ceo-review` |
-| **Arch Design** / 架构设计 | Technical architecture and data flow | `/arch-design` |
-| **Code Review** / 代码审查 | Staff Engineer-level code review | `/code-review` |
-| **QA Test** / 质量测试 | Automated testing with real browser | `/qa-test` |
-| **Security** / 安全审计 | OWASP + 等保 compliance audit | `/security` |
-| **Ship** / 一键发布 | Test → PR → Merge in one command | `/ship` |
-| **Deploy** / 部署验证 | CI/CD monitoring and verification | `/deploy` |
-| **Monitor** / 线上监控 | Post-deploy monitoring | `/monitor` |
-| **Retro** / 周复盘 | Weekly retrospective and metrics | `/retro` |
-
-### Safety Skills / 安全技能
-
-| Skill / 技能 | Description / 描述 | Command / 命令 |
-|-------------|-------------------|---------------|
-| **Careful** / 谨慎模式 | Warn before destructive operations | `/careful` |
-| **Freeze** / 冻结模式 | Lock editing to specific directory | `/freeze` |
-| **Guard** / 守护模式 | Full safety mode (Careful + Freeze) | `/guard` |
+| 命令 | 功能 | 用途 |
+|------|------|------|
+| `./dragonstack brainstorm` | 产品构思 | 开始新项目/功能 |
+| `./dragonstack design` | 架构设计 | 设计技术方案 |
+| `./dragonstack code` | 代码生成 | 生成代码框架 |
+| `./dragonstack review` | 代码审查 | 检查代码质量 |
+| `./dragonstack test` | 测试 | 运行测试 |
+| `./dragonstack ship` | 发布 | 提交并推送代码 |
 
 ---
 
-## 🌏 Platform Support / 平台支持
+## 📖 详细使用指南
 
-| Platform / 平台 | Status / 状态 | Notes / 说明 |
-|----------------|--------------|-------------|
-| **Trae** | ✅ Default / 默认 | ByteDance, Claude 3.5, Free / 免费 |
-| **Cursor** | ✅ Advanced / 进阶 | Best features, requires proxy / 需代理 |
-| **Codeium** | 🚧 Planned / 计划中 | Free tier, domestic / 国产可用 |
-| **通义灵码** | 🚧 Planned / 计划中 | Alibaba Cloud / 阿里云 |
+### 完整工作流示例
+
+```bash
+# 1. 产品构思
+./dragonstack brainstorm
+# → 生成 docs/brainstorm-YYYYMMDD.md
+
+# 2. 架构设计
+./dragonstack design
+# → 生成 docs/design-YYYYMMDD.md
+
+# 3. 开发代码
+./dragonstack code
+# → 提示如何用 AI 生成代码
+
+# 4. 代码审查
+./dragonstack review
+# → 检查清单和报告
+
+# 5. 运行测试
+./dragonstack test
+# → 自动运行测试
+
+# 6. 发布
+./dragonstack ship
+# → 提交并推送到 GitHub
+```
 
 ---
 
-## 📖 Documentation / 文档
+## 🛠️ 系统要求
 
-- [Setup Guide / 安装指南](./docs/setup.md)
-- [Skill Reference / 技能参考](./docs/skills.md)
-- [Platform Comparison / 平台对比](./docs/platforms.md)
-- [Philosophy / 设计理念](./docs/philosophy.md)
-- [Contributing / 贡献指南](./CONTRIBUTING.md)
+- **Git** 2.0+
+- **Node.js** 18+
+- **AI 助手**: Trae / Cursor / Claude
+
+**支持平台**:
+- ✅ macOS
+- ✅ Linux
+- ✅ Windows (Git Bash / WSL)
 
 ---
 
-## 🏗️ Architecture / 架构
+## 📁 项目结构
 
 ```
-dragonstack/
-├── README.md                    # Project intro (this file)
-├── README.zh.md                 # 中文版说明
-├── LICENSE                      # MIT License
-├── docs/                        # Documentation
-│   ├── setup.md
-│   ├── setup.zh.md
-│   ├── skills.md
-│   ├── skills.zh.md
-│   ├── platforms.md
-│   └── philosophy.md
-├── skills/                      # Skill implementations
-│   ├── brainstorm/
-│   ├── ceo-review/
-│   ├── arch-design/
-│   ├── code-review/
-│   ├── qa-test/
-│   ├── security/
-│   ├── ship/
+your-project/
+├── dragonstack              # 主命令
+├── README.md                # 项目说明
+├── docs/                    # 生成的文档
+│   ├── brainstorm-*.md
+│   ├── design-*.md
 │   └── ...
-├── templates/                   # Project templates
-│   ├── TRAE.md.template
-│   ├── CURSOR.md.template
-│   └── CLAUDE.md.template
-├── scripts/                     # Utility scripts
-│   ├── setup.sh
-│   ├── upgrade.sh
-│   └── verify.sh
-└── examples/                    # Example projects
-    ├── web-app/
-    ├── api-service/
-    └── cli-tool/
+├── .dragonstack/            # 龙栈配置
+│   ├── config.yaml
+│   └── skills/
+│       ├── brainstorm.sh
+│       ├── design.sh
+│       ├── code.sh
+│       ├── review.sh
+│       ├── test.sh
+│       └── ship.sh
+└── src/                     # 你的代码
 ```
 
 ---
 
-## 🤝 Contributing / 贡献
+## 💡 使用技巧
 
-We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+### 技巧 1：快速开始新项目
+```bash
+~/.dragonstack/scripts/onboard.sh
+```
 
-欢迎贡献！请查看 [CONTRIBUTING.md](./CONTRIBUTING.md) 了解贡献指南。
+### 技巧 2：查看所有命令
+```bash
+./dragonstack help
+```
+
+### 技巧 3：每个技能都生成文档
+所有技能都会在 `docs/` 目录生成文档，方便追踪和回顾。
+
+### 技巧 4：与 AI 助手配合
+龙栈提供结构化流程，AI 助手（Trae/Cursor）负责具体实现。
 
 ---
 
-## 📜 License / 许可证
+## 🐛 故障排除
 
-MIT License - see [LICENSE](./LICENSE) for details.
+### 问题 1：Permission denied
+```bash
+chmod +x ./dragonstack
+chmod +x ./.dragonstack/skills/*.sh
+```
+
+### 问题 2：Command not found
+确保你在项目根目录运行命令。
+
+### 问题 3：Git 未配置
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+```
 
 ---
 
-## 🙏 Acknowledgments / 致谢
+## 🤝 贡献
 
-- Inspired by [gstack](https://github.com/garrytan/gstack) by Garry Tan
-- Built for the Chinese AI developer community
-- Powered by [Trae](https://www.trae.ai/) and [Cursor](https://cursor.sh/)
+欢迎提交 Issue 和 PR！
+
+GitHub: https://github.com/OasysCore/DragonStack-
+
+---
+
+## 📜 许可证
+
+MIT License
+
+Copyright (c) 2026 OASYS CORE INTERNATIONAL LIMITED / 潤芯國際(香港)有限公司
 
 ---
 
 <p align="center">
-  <strong>DragonStack / 龙栈</strong><br>
-  <em>Ship like a team of twenty. / 一人抵二十人团队。</em><br>
+  <strong>DragonStack 2.0</strong><br>
+  <em>一人抵二十人团队 / One person, twenty specialists</em><br>
   <br>
-  Made with ❤️ by OASYS CORE INTERNATIONAL LIMITED / 潤芯國際(香港)有限公司
+  🐉
 </p>
