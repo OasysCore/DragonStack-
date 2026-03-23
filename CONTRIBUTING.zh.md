@@ -12,7 +12,7 @@
 
 发现错误？有建议？
 
-- **GitHub Issues**: [github.com/williamzhao621/dragonstack/issues](https://github.com/williamzhao621/dragonstack/issues)
+- **GitHub Issues**: [github.com/OasysCore/DragonStack-/issues](https://github.com/OasysCore/DragonStack-/issues)
 - **错误报告**: 使用错误报告模板
 - **功能请求**: 使用功能请求模板
 
