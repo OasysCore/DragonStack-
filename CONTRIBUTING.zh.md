@@ -78,8 +78,8 @@ Fixes #123
 
 ```bash
 # 克隆你的 fork
-git clone https://github.com/YOUR_USERNAME/dragonstack.git
-cd dragonstack
+git clone https://github.com/YOUR_USERNAME/DragonStack-.git
+cd DragonStack-
 
 # 安装依赖
 npm install

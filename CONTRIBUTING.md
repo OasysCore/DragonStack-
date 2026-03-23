@@ -77,8 +77,8 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
 ```bash
 # Clone your fork / 克隆你的 fork
-git clone https://github.com/YOUR_USERNAME/dragonstack.git
-cd dragonstack
+git clone https://github.com/YOUR_USERNAME/DragonStack-.git
+cd DragonStack-
 
 # Install dependencies / 安装依赖
 npm install
