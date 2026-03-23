@@ -47,7 +47,7 @@ Each skill feeds into the next. Nothing falls through the cracks.
 
 ```bash
 # Clone the repository
-git clone https://github.com/williamzhao621/dragonstack.git ~/.dragonstack
+git clone https://github.com/OasysCore/DragonStack-.git ~/.dragonstack
 
 # Run setup
 cd ~/.dragonstack && ./setup.sh

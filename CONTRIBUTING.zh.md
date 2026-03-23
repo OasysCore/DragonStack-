@@ -138,7 +138,7 @@ npm run dev
 
 ## ❓ 有问题？
 
-- **GitHub Discussions**: [github.com/williamzhao621/dragonstack/discussions](https://github.com/williamzhao621/dragonstack/discussions)
+- **GitHub Discussions**: [github.com/OasysCore/DragonStack-/discussions](https://github.com/OasysCore/DragonStack-/discussions)
 - **Email**: contact@oasys-core.com
 
 ---
@@ -146,4 +146,6 @@ npm run dev
 <p align="center">
   <strong>感谢你的贡献！/ Thank you for contributing!</strong><br>
   <em>一起，我们构建得更好。/ Together, we build better.</em>
+</p>
+em>
 </p>

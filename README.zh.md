@@ -45,7 +45,7 @@ Think → Plan → Build → Review → Test → Ship → Reflect
 
 ```bash
 # 克隆仓库
-git clone https://github.com/williamzhao621/dragonstack.git ~/.dragonstack
+git clone https://github.com/OasysCore/DragonStack-.git ~/.dragonstack
 
 # 运行安装脚本
 cd ~/.dragonstack && ./setup.sh

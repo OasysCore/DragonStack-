@@ -11,7 +11,7 @@
 
 Found a bug? Have a suggestion? / 发现错误？有建议？
 
-- **GitHub Issues**: [github.com/williamzhao621/dragonstack/issues](https://github.com/williamzhao621/dragonstack/issues)
+- **GitHub Issues**: [github.com/OasysCore/DragonStack-/issues](https://github.com/OasysCore/DragonStack-/issues)
 - **Bug Reports**: Use the bug report template / 使用错误报告模板
 - **Feature Requests**: Use the feature request template / 使用功能请求模板
 
@@ -145,4 +145,6 @@ Contributors will be: / 贡献者将被：
 <p align="center">
   <strong>Thank you for contributing! / 感谢你的贡献！</strong><br>
   <em>Together, we build better. / 一起，我们构建得更好。</em>
+</p>
+em>
 </p>

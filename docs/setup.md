@@ -36,7 +36,7 @@ npm --version
 
 ```bash
 # Clone to home directory / 克隆到主目录
-git clone https://github.com/williamzhao621/dragonstack.git ~/.dragonstack
+git clone https://github.com/OasysCore/DragonStack-.git ~/.dragonstack
 
 # Enter directory / 进入目录
 cd ~/.dragonstack
