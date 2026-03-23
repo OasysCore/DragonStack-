@@ -137,7 +137,7 @@ Contributors will be: / 贡献者将被：
 
 ## ❓ Questions? / 有问题？
 
-- **GitHub Discussions**: [github.com/williamzhao621/dragonstack/discussions](https://github.com/williamzhao621/dragonstack/discussions)
+- **GitHub Discussions**: [github.com/OasysCore/DragonStack-/discussions](https://github.com/OasysCore/DragonStack-/discussions)
 - **Email**: contact@oasys-core.com
 
 ---
