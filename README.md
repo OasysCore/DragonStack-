@@ -166,6 +166,15 @@ git config --global user.email "your@email.com"
 
 ---
 
+## 🙏 致谢 / Acknowledgments
+
+DragonStack is inspired by [gstack](https://github.com/garrytan/gstack) by Garry Tan.  
+龙栈的设计灵感来源于 Garry Tan 的 gstack。
+
+感谢开源社区提供的工具和灵感。
+
+---
+
 ## 🤝 贡献
 
 欢迎提交 Issue 和 PR！
