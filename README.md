@@ -10,11 +10,17 @@
 
 ## 🚀 快速开始 (30秒)
 
-### 第一步：安装龙栈
+### 第一步：安装/更新龙栈
 
 ```bash
-git clone https://github.com/OasysCore/DragonStack-.git ~/.dragonstack
+# 自动安装或更新
+curl -fsSL https://raw.githubusercontent.com/OasysCore/DragonStack-/main/install.sh | bash
+
+# 或手动运行
+bash <(curl -fsSL https://raw.githubusercontent.com/OasysCore/DragonStack-/main/install.sh)
 ```
+
+**已安装？** 再次运行即可更新到最新版本。
 
 ### 第二步：创建项目（交互式）
 
