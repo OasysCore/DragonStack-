@@ -19,17 +19,32 @@ NC='\033[0m'
 if [ -d "$HOME/.dragonstack" ]; then
     echo -e "${YELLOW}⚠️ DragonStack already exists at ~/.dragonstack${NC}"
     echo ""
-    read -p "Update to latest version? / 更新到最新版本? (yes/no): " UPDATE
-    if [ "$UPDATE" == "yes" ]; then
+    read -p "Update to latest version? / 更新到最新版本? (Y/n): " UPDATE
+    
+    # Default to "yes" if user just presses Enter
+    if [ -z "$UPDATE" ] || [ "$UPDATE" == "Y" ] || [ "$UPDATE" == "y" ] || [ "$UPDATE" == "yes" ]; then
         echo ""
         echo "🔄 Updating DragonStack..."
         cd "$HOME/.dragonstack"
-        git pull origin main
-        echo ""
-        echo -e "${GREEN}✅ DragonStack updated!${NC}"
-        echo ""
-        echo "📋 What's new:"
-        git log --oneline -3
+        
+        # Fetch latest changes
+        git fetch origin main
+        
+        # Check if there are updates
+        LOCAL=$(git rev-parse HEAD)
+        REMOTE=$(git rev-parse origin/main)
+        
+        if [ "$LOCAL" == "$REMOTE" ]; then
+            echo -e "${GREEN}✅ Already up to date!${NC}"
+        else
+            git pull origin main
+            echo ""
+            echo -e "${GREEN}✅ DragonStack updated!${NC}"
+            echo ""
+            echo "📋 What's new:"
+            git log --oneline HEAD...origin/main --reverse 2>/dev/null || git log --oneline -3
+        fi
+        
         echo ""
         echo "🐉 Ready to use!"
         exit 0
