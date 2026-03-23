@@ -56,8 +56,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Copy templates / 复制模板
 echo "📄 Copying templates / 复制模板..."
-if [ -f "$SCRIPT_DIR/templates/${PLATFORM^^}.md.template" ]; then
-    cp "$SCRIPT_DIR/templates/${PLATFORM^^}.md.template" ./DRAGONSTACK.md
+# Convert platform to uppercase for template filename (兼容 macOS Bash 3.2)
+PLATFORM_UPPER=$(echo "$PLATFORM" | tr '[:lower:]' '[:upper:]')
+if [ -f "$SCRIPT_DIR/templates/${PLATFORM_UPPER}.md.template" ]; then
+    cp "$SCRIPT_DIR/templates/${PLATFORM_UPPER}.md.template" ./DRAGONSTACK.md
     echo -e "${GREEN}✅ Created DRAGONSTACK.md for $PLATFORM${NC}"
 else
     echo -e "${YELLOW}⚠️ Template not found, using default / 模板未找到，使用默认${NC}"
