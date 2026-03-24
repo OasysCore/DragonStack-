@@ -1,10 +1,11 @@
-# DragonStack 2.0 / 龙栈 2.0
+# DragonStack 2.1 / 龙栈 2.1
 
 > **AI-powered development workflow for Chinese developers**  
 > **为中国开发者打造的 AI 驱动开发工作流**
 
-[![Version](https://img.shields.io/badge/version-2.0-blue.svg)](https://github.com/OasysCore/DragonStack-)
+[![Version](https://img.shields.io/badge/version-2.1-blue.svg)](https://github.com/OasysCore/DragonStack-)
 [![Platform](https://img.shields.io/badge/platform-Trae%20%7C%20Cursor-green.svg)](https://www.trae.ai/)
+[![ACP](https://img.shields.io/badge/ACP-Supported-orange.svg)](https://docs.openclaw.ai/tools/acp-agents)
 
 ---
 
@@ -45,16 +46,51 @@ cd your-project
 
 ---
 
-## 🎯 核心技能
+## 🎯 核心技能 (9个)
+
+### 开发流程技能
 
 | 命令 | 功能 | 用途 |
 |------|------|------|
 | `./dragonstack brainstorm` | 产品构思 | 开始新项目/功能 |
 | `./dragonstack design` | 架构设计 | 设计技术方案 |
 | `./dragonstack code` | 代码生成 | 生成代码框架 |
-| `./dragonstack review` | 代码审查 | 检查代码质量 |
-| `./dragonstack test` | 测试 | 运行测试 |
+| `./dragonstack code-review` | 代码审查 | 检查代码质量 |
+| `./dragonstack test` | 测试 | 测试规划和执行 |
 | `./dragonstack ship` | 发布 | 提交并推送代码 |
+
+### 扩展技能
+
+| 命令 | 功能 | 用途 |
+|------|------|------|
+| `./dragonstack debug` | 调试 | 系统诊断和问题修复 |
+| `./dragonstack doc` | 文档 | 生成 API/项目文档 |
+| `./dragonstack refactor` | 重构 | 代码重构和优化 |
+
+---
+
+## 🤖 ACP 集成 (新功能)
+
+DragonStack 2.1 支持 ACP (Agent Client Protocol)，可以调用外部 AI 编程工具：
+
+```bash
+# 使用 Codex 生成代码
+./dragonstack code --use-acp codex --language go
+
+# 使用 Claude 进行架构设计
+./dragonstack design --use-acp claude
+
+# 使用 Pi 进行交互式开发
+./dragonstack code --use-acp pi
+```
+
+支持的 ACP 代理：
+- `codex` - OpenAI Codex
+- `claude` - Claude Code
+- `pi` - Pi Agent
+- `opencode` - OpenCode
+- `gemini` - Gemini CLI
+- `kimi` - Kimi Agent
 
 ---
 
@@ -73,19 +109,36 @@ cd your-project
 
 # 3. 开发代码
 ./dragonstack code
-# → 提示如何用 AI 生成代码
+# → 生成代码规范和模板
 
 # 4. 代码审查
-./dragonstack review
-# → 检查清单和报告
+./dragonstack code-review
+# → 生成审查报告
 
-# 5. 运行测试
+# 5. 测试规划
 ./dragonstack test
-# → 自动运行测试
+# → 生成测试计划和用例
 
 # 6. 发布
 ./dragonstack ship
 # → 提交并推送到 GitHub
+```
+
+### 扩展技能使用
+
+```bash
+# 调试问题
+./dragonstack debug
+# → 系统诊断框架
+
+# 生成文档
+./dragonstack doc --api
+./dragonstack doc --readme
+./dragonstack doc --changelog
+
+# 重构代码
+./dragonstack refactor
+# → 重构计划和检查清单
 ```
 
 ---
@@ -94,7 +147,7 @@ cd your-project
 
 - **Git** 2.0+
 - **Node.js** 18+
-- **AI 助手**: Trae / Cursor / Claude
+- **AI 助手**: Trae / Cursor / Claude / OpenClaw ACP
 
 **支持平台**:
 - ✅ macOS
@@ -112,16 +165,22 @@ your-project/
 ├── docs/                    # 生成的文档
 │   ├── brainstorm-*.md
 │   ├── design-*.md
+│   ├── code-*.md
+│   ├── test-plan-*.md
+│   ├── debug-*.md
 │   └── ...
 ├── .dragonstack/            # 龙栈配置
 │   ├── config.yaml
 │   └── skills/
-│       ├── brainstorm.sh
-│       ├── design.sh
-│       ├── code.sh
-│       ├── review.sh
-│       ├── test.sh
-│       └── ship.sh
+│       ├── brainstorm/
+│       ├── design/
+│       ├── code/
+│       ├── code-review/
+│       ├── test/
+│       ├── ship/
+│       ├── debug/
+│       ├── doc/
+│       └── refactor/
 └── src/                     # 你的代码
 ```
 
@@ -136,14 +195,20 @@ your-project/
 
 ### 技巧 2：查看所有命令
 ```bash
+./dragonstack list
 ./dragonstack help
 ```
 
-### 技巧 3：每个技能都生成文档
+### 技巧 3：使用 ACP 增强开发
+```bash
+./dragonstack code --use-acp codex --language go --component api
+```
+
+### 技巧 4：每个技能都生成文档
 所有技能都会在 `docs/` 目录生成文档，方便追踪和回顾。
 
-### 技巧 4：与 AI 助手配合
-龙栈提供结构化流程，AI 助手（Trae/Cursor）负责具体实现。
+### 技巧 5：与 AI 助手配合
+龙栈提供结构化流程，AI 助手（Trae/Cursor/ACP）负责具体实现。
 
 ---
 
@@ -152,7 +217,7 @@ your-project/
 ### 问题 1：Permission denied
 ```bash
 chmod +x ./dragonstack
-chmod +x ./.dragonstack/skills/*.sh
+chmod +x ./.dragonstack/skills/*/*.sh
 ```
 
 ### 问题 2：Command not found
@@ -163,6 +228,28 @@ chmod +x ./.dragonstack/skills/*.sh
 git config --global user.name "Your Name"
 git config --global user.email "your@email.com"
 ```
+
+### 问题 4：ACP 不可用
+确保 OpenClaw 已安装并配置了 ACP：
+```bash
+openclaw config get acp.enabled
+# 应该返回 true
+```
+
+---
+
+## 🆕 更新日志
+
+### v2.1 (2026-03-24)
+- ✅ 新增 3 个扩展技能：debug, doc, refactor
+- ✅ ACP 集成支持（Codex, Claude, Pi 等）
+- ✅ 改进的代码生成模板
+- ✅ 多语言支持（Go, Python, JavaScript, Rust）
+
+### v2.0 (2026-03-23)
+- ✅ 交互式 onboard.sh 安装向导
+- ✅ 统一 dragonstack 命令入口
+- ✅ 跨平台支持
 
 ---
 
@@ -183,7 +270,7 @@ Copyright (c) 2026 OASYS CORE INTERNATIONAL LIMITED / 潤芯國際(香港)有限
 ---
 
 <p align="center">
-  <strong>DragonStack 2.0</strong><br>
+  <strong>DragonStack 2.1</strong><br>
   <em>一人抵二十人团队 / One person, twenty specialists</em><br>
   <br>
   🐉

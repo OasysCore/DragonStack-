@@ -1,0 +1,295 @@
+#!/bin/bash
+# Debug Skill Script / 调试技能脚本
+# Copyright (c) 2026 OASYS CORE INTERNATIONAL LIMITED / 潤芯國際(香港)有限公司
+
+set -e
+
+echo "🐛 DragonStack Debug Skill / 调试技能"
+echo "======================================"
+echo ""
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+# Check if we're in a project directory
+if [ ! -f "./DRAGONSTACK.md" ] && [ ! -d "./.dragonstack" ]; then
+    echo -e "${YELLOW}⚠️  No DragonStack project detected / 未检测到龙栈项目${NC}"
+    echo "Run this from your project root / 请从项目根目录运行"
+    exit 1
+fi
+
+# Create directories
+mkdir -p docs
+mkdir -p debug-sessions
+
+# Get current date
+DATE=$(date +%Y-%m-%d)
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+OUTPUT_FILE="docs/debug-${DATE}.md"
+SESSION_FILE="debug-sessions/session-${TIMESTAMP}.md"
+
+echo -e "${BLUE}🐛 Debug Framework / 调试框架${NC}"
+echo ""
+echo "This skill will help you: / 本技能将帮助你："
+echo "  1. Systematically diagnose issues / 系统地诊断问题"
+echo "  2. Document debugging steps / 记录调试步骤"
+echo "  3. Find root causes / 找到根本原因"
+echo "  4. Create fixes / 创建修复"
+echo ""
+
+# Prompt user for input
+echo -e "${YELLOW}💡 Describe the bug/issue / 描述 bug/问题:${NC}"
+echo "   (What happened? What did you expect? When does it occur?)"
+echo "   （发生了什么？你期望什么？什么时候发生？）"
+echo ""
+echo "   Type your description and press Ctrl+D when done:"
+echo "   输入你的描述，完成后按 Ctrl+D："
+echo ""
+
+# Read user input
+BUG_DESCRIPTION=$(cat)
+
+# Generate debug report
+echo ""
+echo -e "${BLUE}📝 Generating debug report... / 生成调试报告...${NC}"
+
+cat > "$OUTPUT_FILE" << EOF
+# Debug Report / 调试报告
+
+**Date / 日期**: ${DATE}  
+**Project / 项目**: $(basename "$(pwd)")  
+**Skill / 技能**: /debug  
+**Session ID / 会话 ID**: ${TIMESTAMP}
+
+---
+
+## 1. Bug Description / Bug 描述
+
+${BUG_DESCRIPTION}
+
+---
+
+## 2. Debugging Checklist / 调试检查清单
+
+### 2.1 Information Gathering / 信息收集
+
+- [ ] Reproduction steps confirmed / 复现步骤已确认
+- [ ] Environment details captured / 环境详情已捕获
+- [ ] Error messages logged / 错误信息已记录
+- [ ] Stack traces collected / 堆栈跟踪已收集
+- [ ] Recent changes identified / 最近的更改已识别
+
+### 2.2 Environment / 环境
+
+| Item / 项目 | Value / 值 |
+|------------|-----------|
+| OS / 操作系统 | $(uname -s) $(uname -r) |
+| Project / 项目 | $(basename "$(pwd)") |
+| Git Branch / 分支 | $(git branch --show-current 2>/dev/null || echo "N/A") |
+| Git Commit / 提交 | $(git rev-parse --short HEAD 2>/dev/null || echo "N/A") |
+
+### 2.3 Recent Changes / 最近更改
+
+\`\`\`bash
+# Recent commits / 最近提交
+$(git log --oneline -5 2>/dev/null || echo "No git history / 无 git 历史")
+\`\`\`
+
+---
+
+## 3. Root Cause Analysis / 根本原因分析
+
+### 3.1 5 Whys / 5 个为什么
+
+| Level / 级别 | Question / 问题 | Answer / 答案 |
+|-------------|----------------|--------------|
+| Why 1 | Why did the issue occur? / 为什么发生这个问题？ | [Answer] |
+| Why 2 | Why did [Why 1 answer] happen? / 为什么 [Why 1 答案] 发生？ | [Answer] |
+| Why 3 | Why did [Why 2 answer] happen? / 为什么 [Why 2 答案] 发生？ | [Answer] |
+| Why 4 | Why did [Why 3 answer] happen? / 为什么 [Why 3 答案] 发生？ | [Answer] |
+| Why 5 | Why did [Why 4 answer] happen? / 为什么 [Why 4 答案] 发生？ | [Root Cause] |
+
+### 3.2 Root Cause / 根本原因
+
+**Root Cause / 根本原因**: [Describe the root cause]
+
+**Category / 类别**:
+- [ ] Logic Error / 逻辑错误
+- [ ] Race Condition / 竞争条件
+- [ ] Configuration Issue / 配置问题
+- [ ] Environment Issue / 环境问题
+- [ ] Data Issue / 数据问题
+- [ ] Third-party Issue / 第三方问题
+- [ ] Regression / 回归问题
+
+---
+
+## 4. Debugging Steps Taken / 已采取的调试步骤
+
+### Step 1: [Step Description / 步骤描述]
+
+**Action / 操作**: [What you did]
+
+**Result / 结果**: [What happened]
+
+**Observation / 观察**: [What you noticed]
+
+### Step 2: [Step Description / 步骤描述]
+
+**Action / 操作**: [What you did]
+
+**Result / 结果**: [What happened]
+
+**Observation / 观察**: [What you noticed]
+
+---
+
+## 5. Solution / 解决方案
+
+### 5.1 Fix Description / 修复描述
+
+[Describe the fix / 描述修复]
+
+### 5.2 Code Changes / 代码更改
+
+\`\`\`diff
+# Add your diff here / 在这里添加你的 diff
+- old code
++ new code
+\`\`\`
+
+### 5.3 Testing the Fix / 测试修复
+
+- [ ] Fix tested locally / 修复已在本地测试
+- [ ] Original issue resolved / 原始问题已解决
+- [ ] No regressions introduced / 未引入回归问题
+- [ ] Edge cases tested / 边界情况已测试
+
+---
+
+## 6. Prevention / 预防措施
+
+### 6.1 How to prevent this in the future / 如何预防将来发生
+
+- [ ] Add unit test / 添加单元测试
+- [ ] Add integration test / 添加集成测试
+- [ ] Update documentation / 更新文档
+- [ ] Add monitoring/alerting / 添加监控/告警
+- [ ] Code review checklist update / 更新代码审查检查清单
+
+### 6.2 Lessons Learned / 经验教训
+
+[What did you learn from this debugging session?]
+[你从这个调试会话中学到了什么？]
+
+---
+
+## 7. References / 参考
+
+- Related issues / 相关问题: #[issue-number]
+- Related PRs / 相关 PR: #[pr-number]
+- Documentation / 文档: [link]
+
+---
+
+## 8. Next Steps / 下一步
+
+- [ ] Implement fix / 实现修复
+- [ ] Write tests / 编写测试
+- [ ] Code review / 代码审查
+- [ ] Deploy to staging / 部署到测试环境
+- [ ] Deploy to production / 部署到生产环境
+- [ ] Monitor for recurrence / 监控是否复发
+
+---
+
+*Generated by DragonStack /debug skill / 由龙栈 /debug 技能生成*
+EOF
+
+# Create session file for detailed tracking
+cat > "$SESSION_FILE" << EOF
+# Debug Session / 调试会话
+
+**Session ID / 会话 ID**: ${TIMESTAMP}  
+**Started / 开始**: ${DATE}
+
+## Quick Notes / 快速笔记
+
+[Use this file for quick notes during debugging]
+[在调试期间使用此文件记录快速笔记]
+
+### Error Messages / 错误信息
+
+\`\`\`
+[Paste error messages here]
+[在这里粘贴错误信息]
+\`\`\`
+
+### Commands Run / 运行的命令
+
+\`\`\`bash
+# Add commands you run during debugging
+# 添加你在调试期间运行的命令
+\`\`\`
+
+### Observations / 观察
+
+- Observation 1
+- Observation 2
+
+### Hypotheses / 假设
+
+1. [Hypothesis 1] - [Status: Confirmed/Rejected]
+2. [Hypothesis 2] - [Status: Confirmed/Rejected]
+
+### Breakthrough Moment / 突破时刻
+
+[When you found the root cause]
+[当你找到根本原因时]
+
+EOF
+
+echo ""
+echo -e "${GREEN}✅ Debug report created! / 调试报告已创建！${NC}"
+echo ""
+echo "📄 Main report / 主报告: ${OUTPUT_FILE}"
+echo "📝 Session notes / 会话笔记: ${SESSION_FILE}"
+echo ""
+echo -e "${YELLOW}📋 Debug Framework / 调试框架:${NC}"
+echo ""
+echo -e "${CYAN}🔍 Systematic Debugging Steps / 系统调试步骤:${NC}"
+echo "   1. Reproduce the issue / 复现问题"
+echo "   2. Gather information / 收集信息"
+echo "   3. Form hypotheses / 形成假设"
+echo "   4. Test hypotheses / 测试假设"
+echo "   5. Find root cause / 找到根本原因"
+echo "   6. Create fix / 创建修复"
+echo "   7. Verify fix / 验证修复"
+echo "   8. Document learnings / 记录经验教训"
+echo ""
+echo -e "${CYAN}🛠️  Common Debugging Commands / 常用调试命令:${NC}"
+echo "   # Check logs / 检查日志"
+echo "   tail -f logs/app.log"
+echo ""
+echo "   # Check processes / 检查进程"
+echo "   ps aux | grep [process]"
+echo ""
+echo "   # Check network / 检查网络"
+echo "   netstat -tlnp | grep [port]"
+echo ""
+echo "   # Check resources / 检查资源"
+echo "   df -h && free -m"
+echo ""
+echo -e "${YELLOW}📋 Next steps / 下一步:${NC}"
+echo "   1. Follow the debugging checklist / 遵循调试检查清单"
+echo "   2. Document each step in the session file / 在会话文件中记录每个步骤"
+echo "   3. Use 5 Whys to find root cause / 使用 5 个为什么找到根本原因"
+echo "   4. Create and test the fix / 创建并测试修复"
+echo "   5. Run /code-review on the fix / 对修复运行 /code-review"
+echo ""
+echo "🐛 Happy debugging! / 调试愉快！"

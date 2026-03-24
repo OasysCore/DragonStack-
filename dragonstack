@@ -1,0 +1,208 @@
+#!/bin/bash
+# DragonStack Main Entry Point / 龙栈主入口
+# Copyright (c) 2026 OASYS CORE INTERNATIONAL LIMITED / 潤芯國際(香港)有限公司
+
+set -e
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+# Get script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Show banner
+show_banner() {
+    echo ""
+    echo -e "${CYAN}🐉 DragonStack - AI-Powered Development Workflow${NC}"
+    echo -e "${CYAN}   龙栈 - AI 驱动的开发工作流${NC}"
+    echo ""
+}
+
+# Show help
+show_help() {
+    show_banner
+    echo "Usage: ./dragonstack [skill] [options]"
+    echo ""
+    echo "Available Skills / 可用技能:"
+    echo ""
+    echo -e "${GREEN}Core Skills / 核心技能:${NC}"
+    echo "  brainstorm      Product ideation and design / 产品构思和设计"
+    echo "  design          Architecture design / 架构设计"
+    echo "  code            Code generation / 代码生成"
+    echo "  code-review     Code review / 代码审查"
+    echo "  test            Test planning and execution / 测试规划和执行"
+    echo "  ship            Release and deployment / 发布和部署"
+    echo ""
+    echo -e "${YELLOW}Extended Skills / 扩展技能:${NC}"
+    echo "  debug           Debugging assistance / 调试辅助"
+    echo "  doc             Documentation generation / 文档生成"
+    echo "  refactor        Code refactoring / 代码重构"
+    echo ""
+    echo -e "${BLUE}Utility Commands / 实用命令:${NC}"
+    echo "  help            Show this help / 显示此帮助"
+    echo "  version         Show version / 显示版本"
+    echo "  list            List all skills / 列出所有技能"
+    echo ""
+    echo "Options / 选项:"
+    echo "  --use-acp       Use ACP agent (for design, code) / 使用 ACP 代理"
+    echo "  --help          Show skill-specific help / 显示技能特定帮助"
+    echo ""
+    echo "Examples / 示例:"
+    echo "  ./dragonstack brainstorm"
+    echo "  ./dragonstack design --use-acp claude"
+    echo "  ./dragonstack code --use-acp codex --language go"
+    echo "  ./dragonstack test --coverage"
+    echo ""
+}
+
+# Show version
+show_version() {
+    echo "DragonStack v2.1.0"
+    echo "Copyright (c) 2026 OASYS CORE INTERNATIONAL LIMITED"
+    echo "Built with ❤️  for AI-powered development"
+}
+
+# List all skills
+list_skills() {
+    show_banner
+    echo -e "${GREEN}Core Skills (6) / 核心技能:${NC}"
+    echo "  ✓ brainstorm    - Product ideation / 产品构思"
+    echo "  ✓ design        - Architecture design / 架构设计"
+    echo "  ✓ code          - Code generation / 代码生成"
+    echo "  ✓ code-review   - Code review / 代码审查"
+    echo "  ✓ test          - Test planning / 测试规划"
+    echo "  ✓ ship          - Release / 发布"
+    echo ""
+    echo -e "${YELLOW}Extended Skills (3) / 扩展技能:${NC}"
+    echo "  ✓ debug         - Debugging / 调试"
+    echo "  ✓ doc           - Documentation / 文档"
+    echo "  ✓ refactor      - Refactoring / 重构"
+    echo ""
+    echo -e "${BLUE}Total: 9 skills available / 共 9 个技能可用${NC}"
+}
+
+# Main logic
+main() {
+    # No arguments - show menu
+    if [ $# -eq 0 ]; then
+        show_banner
+        echo "Available skills / 可用技能:"
+        echo ""
+        echo "  1) brainstorm   - Product ideation"
+        echo "  2) design       - Architecture design"
+        echo "  3) code         - Code generation"
+        echo "  4) code-review  - Code review"
+        echo "  5) test         - Test planning"
+        echo "  6) ship         - Release"
+        echo "  7) debug        - Debugging"
+        echo "  8) doc          - Documentation"
+        echo "  9) refactor     - Refactoring"
+        echo ""
+        echo "Run './dragonstack help' for more info"
+        echo "运行 './dragonstack help' 获取更多信息"
+        exit 0
+    fi
+    
+    # Parse command
+    COMMAND="$1"
+    shift
+    
+    case "$COMMAND" in
+        help|--help|-h)
+            show_help
+            ;;
+        version|--version|-v)
+            show_version
+            ;;
+        list|--list|-l)
+            list_skills
+            ;;
+        brainstorm|brainstorm.sh)
+            if [ -f "$SCRIPT_DIR/skills/brainstorm/brainstorm.sh" ]; then
+                "$SCRIPT_DIR/skills/brainstorm/brainstorm.sh" "$@"
+            else
+                echo -e "${RED}❌ Skill not found: brainstorm${NC}"
+                exit 1
+            fi
+            ;;
+        design|design.sh)
+            if [ -f "$SCRIPT_DIR/skills/design/design.sh" ]; then
+                "$SCRIPT_DIR/skills/design/design.sh" "$@"
+            else
+                echo -e "${RED}❌ Skill not found: design${NC}"
+                exit 1
+            fi
+            ;;
+        code|code.sh)
+            if [ -f "$SCRIPT_DIR/skills/code/code.sh" ]; then
+                "$SCRIPT_DIR/skills/code/code.sh" "$@"
+            else
+                echo -e "${RED}❌ Skill not found: code${NC}"
+                exit 1
+            fi
+            ;;
+        code-review|code-review.sh|review)
+            if [ -f "$SCRIPT_DIR/skills/code-review/code-review.sh" ]; then
+                "$SCRIPT_DIR/skills/code-review/code-review.sh" "$@"
+            else
+                echo -e "${RED}❌ Skill not found: code-review${NC}"
+                exit 1
+            fi
+            ;;
+        test|test.sh)
+            if [ -f "$SCRIPT_DIR/skills/test/test.sh" ]; then
+                "$SCRIPT_DIR/skills/test/test.sh" "$@"
+            else
+                echo -e "${RED}❌ Skill not found: test${NC}"
+                exit 1
+            fi
+            ;;
+        ship|ship.sh)
+            if [ -f "$SCRIPT_DIR/skills/ship/ship.sh" ]; then
+                "$SCRIPT_DIR/skills/ship/ship.sh" "$@"
+            else
+                echo -e "${RED}❌ Skill not found: ship${NC}"
+                exit 1
+            fi
+            ;;
+        debug|debug.sh)
+            if [ -f "$SCRIPT_DIR/skills/debug/debug.sh" ]; then
+                "$SCRIPT_DIR/skills/debug/debug.sh" "$@"
+            else
+                echo -e "${RED}❌ Skill not found: debug${NC}"
+                exit 1
+            fi
+            ;;
+        doc|doc.sh|docs)
+            if [ -f "$SCRIPT_DIR/skills/doc/doc.sh" ]; then
+                "$SCRIPT_DIR/skills/doc/doc.sh" "$@"
+            else
+                echo -e "${RED}❌ Skill not found: doc${NC}"
+                exit 1
+            fi
+            ;;
+        refactor|refactor.sh)
+            if [ -f "$SCRIPT_DIR/skills/refactor/refactor.sh" ]; then
+                "$SCRIPT_DIR/skills/refactor/refactor.sh" "$@"
+            else
+                echo -e "${RED}❌ Skill not found: refactor${NC}"
+                exit 1
+            fi
+            ;;
+        *)
+            echo -e "${RED}❌ Unknown skill: $COMMAND${NC}"
+            echo ""
+            echo "Run './dragonstack help' for available skills"
+            echo "运行 './dragonstack help' 查看可用技能"
+            exit 1
+            ;;
+    esac
+}
+
+# Run main
+main "$@"
