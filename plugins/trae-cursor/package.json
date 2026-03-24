@@ -1,0 +1,138 @@
+{
+  "name": "dragonstack",
+  "displayName": "DragonStack - AI Development Workflow",
+  "description": "AI-powered development workflow integration for Trae/Cursor",
+  "version": "3.0.0-beta",
+  "publisher": "oasys-core",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "AI",
+    "Machine Learning",
+    "Snippets",
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "development",
+    "workflow",
+    "brainstorm",
+    "design",
+    "code",
+    "dragonstack"
+  ],
+  "activationEvents": [
+    "onCommand:dragonstack.brainstorm",
+    "onCommand:dragonstack.design",
+    "onCommand:dragonstack.code",
+    "onCommand:dragonstack.panel"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "dragonstack.panel",
+        "title": "🐉 Open DragonStack Panel",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.brainstorm",
+        "title": "🧠 Brainstorm",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.design",
+        "title": "🏗️ Design",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.code",
+        "title": "💻 Code",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.codeReview",
+        "title": "🔍 Code Review",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.test",
+        "title": "🧪 Test",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.ship",
+        "title": "🚀 Ship",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.debug",
+        "title": "🐛 Debug",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.doc",
+        "title": "📚 Doc",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.refactor",
+        "title": "🔧 Refactor",
+        "category": "DragonStack"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "dragonstack.panel",
+          "name": "🐉 DragonStack",
+          "when": "workspaceHasDragonstack"
+        }
+      ]
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "dragonstack.brainstorm",
+          "group": "dragonstack@1"
+        },
+        {
+          "command": "dragonstack.design",
+          "group": "dragonstack@2"
+        },
+        {
+          "command": "dragonstack.code",
+          "group": "dragonstack@3"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "dragonstack.codeReview",
+          "group": "dragonstack",
+          "when": "editorHasSelection"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "dragonstack.panel",
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "^18.x",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "axios": "^1.3.0"
+  }
+}

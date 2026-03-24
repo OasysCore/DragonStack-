@@ -1,0 +1,238 @@
+#!/bin/bash
+# DragonStack 3.0 Beta - MVP
+# 最小可行产品：简化 CLI + OpenClaw Skill + 基础 TUI
+
+set -e
+
+VERSION="3.0.0-beta"
+DRAGONSTACK_HOME="${DRAGONSTACK_HOME:-$HOME/.dragonstack}"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+# Show banner
+show_banner() {
+    echo ""
+    echo -e "${CYAN}🐉 DragonStack v${VERSION}${NC}"
+    echo -e "${CYAN}   AI-Powered Development Workflow${NC}"
+    echo ""
+}
+
+# Natural language processor
+process_natural_language() {
+    local input="$1"
+    
+    # Chinese and English keyword matching
+    if echo "$input" | grep -qiE "brainstorm|构思|想法|ideation|头脑风暴"; then
+        echo "brainstorm"
+    elif echo "$input" | grep -qiE "design|架构|设计|architecture|结构"; then
+        echo "design"
+    elif echo "$input" | grep -qiE "code|代码|生成|generate|写代码|编程"; then
+        echo "code"
+    elif echo "$input" | grep -qiE "review|审查|检查|check|code.?review|评审"; then
+        echo "code-review"
+    elif echo "$input" | grep -qiE "test|测试|验证|verify|检查| QA"; then
+        echo "test"
+    elif echo "$input" | grep -qiE "ship|发布|部署|deploy|commit|push|上线"; then
+        echo "ship"
+    elif echo "$input" | grep -qiE "debug|调试|bug|fix|error|排错|修复"; then
+        echo "debug"
+    elif echo "$input" | grep -qiE "doc|文档|documentation|readme|文档生成"; then
+        echo "doc"
+    elif echo "$input" | grep -qiE "refactor|重构|优化|improve|改写|清理"; then
+        echo "refactor"
+    else
+        echo ""
+    fi
+}
+
+# Extract parameters from natural language
+extract_params() {
+    local input="$1"
+    local params=""
+    
+    # Language detection
+    if echo "$input" | grep -qiE "go|golang|go语言"; then
+        params="$params --language go"
+    elif echo "$input" | grep -qiE "python|py|python3|py语言"; then
+        params="$params --language python"
+    elif echo "$input" | grep -qiE "javascript|js|node|nodejs"; then
+        params="$params --language javascript"
+    elif echo "$input" | grep -qiE "typescript|ts|type.script"; then
+        params="$params --language typescript"
+    elif echo "$input" | grep -qiE "rust|rs|rust语言"; then
+        params="$params --language rust"
+    fi
+    
+    # ACP agent detection
+    if echo "$input" | grep -qiE "codex|openai|gpt"; then
+        params="$params --use-acp codex"
+    elif echo "$input" | grep -qiE "claude|anthropic"; then
+        params="$params --use-acp claude"
+    elif echo "$input" | grep -qiE "\bpi\b|pi.agent"; then
+        params="$params --use-acp pi"
+    fi
+    
+    echo "$params"
+}
+
+# Interactive TUI mode
+tui_mode() {
+    show_banner
+    echo -e "${YELLOW}🎯 选择要执行的技能 / Select skill:${NC}"
+    echo ""
+    echo "  1) 🧠 头脑风暴 / Brainstorm"
+    echo "  2) 🏗️  架构设计 / Design"
+    echo "  3) 💻 代码生成 / Code"
+    echo "  4) 🔍 代码审查 / Code Review"
+    echo "  5) 🧪 测试规划 / Test"
+    echo "  6) 🚀 发布部署 / Ship"
+    echo "  7) 🐛 调试诊断 / Debug"
+    echo "  8) 📚 文档生成 / Doc"
+    echo "  9) 🔧 代码重构 / Refactor"
+    echo "  0) ❌ 退出 / Exit"
+    echo ""
+    
+    read -p "选择 / Select [0-9]: " choice
+    
+    case $choice in
+        1) skill="brainstorm" ;;
+        2) skill="design" ;;
+        3) skill="code" ;;
+        4) skill="code-review" ;;
+        5) skill="test" ;;
+        6) skill="ship" ;;
+        7) skill="debug" ;;
+        8) skill="doc" ;;
+        9) skill="refactor" ;;
+        0) exit 0 ;;
+        *) echo -e "${RED}❌ 无效选择 / Invalid choice${NC}"; exit 1 ;;
+    esac
+    
+    echo ""
+    read -p "输入描述 / Enter description: " description
+    
+    execute_skill "$skill" "$description"
+}
+
+# Execute skill
+execute_skill() {
+    local skill="$1"
+    local description="$2"
+    local params="$3"
+    
+    echo ""
+    echo -e "${BLUE}🚀 执行技能 / Executing: $skill${NC}"
+    echo -e "${YELLOW}📝 描述 / Description: $description${NC}"
+    
+    # Check if DragonStack 2.x is installed
+    if [ ! -f "$DRAGONSTACK_HOME/dragonstack" ]; then
+        echo -e "${RED}❌ DragonStack not found. Installing...${NC}"
+        install_dragonstack
+    fi
+    
+    # Auto-initialize project if needed
+    if [ ! -f "./DRAGONSTACK.md" ]; then
+        echo -e "${YELLOW}⚠️  未检测到 DragonStack 项目，自动初始化...${NC}"
+        echo "# DragonStack Project" > ./DRAGONSTACK.md
+        echo "Created: $(date)" >> ./DRAGONSTACK.md
+        mkdir -p .dragonstack
+    fi
+    
+    # Execute
+    echo ""
+    "$DRAGONSTACK_HOME/dragonstack" "$skill" $params
+}
+
+# Install DragonStack
+install_dragonstack() {
+    echo -e "${BLUE}📦 Installing DragonStack...${NC}"
+    curl -fsSL https://raw.githubusercontent.com/OasysCore/DragonStack-/main/install.sh | bash
+}
+
+# Quick mode - single command
+quick_mode() {
+    local input="$*"
+    
+    # Detect intent
+    local skill=$(process_natural_language "$input")
+    local params=$(extract_params "$input")
+    
+    if [ -z "$skill" ]; then
+        echo -e "${YELLOW}⚠️  无法识别命令，启动交互模式...${NC}"
+        echo ""
+        tui_mode
+        return
+    fi
+    
+    # Extract description (remove keywords)
+    local description="$input"
+    
+    execute_skill "$skill" "$description" "$params"
+}
+
+# Help
+show_help() {
+    show_banner
+    echo "Usage:"
+    echo "  ds                          # 交互模式 / Interactive mode"
+    echo "  ds <自然语言命令>            # 快速模式 / Quick mode"
+    echo "  ds <skill> [options]        # 传统模式 / Traditional mode"
+    echo ""
+    echo "Examples / 示例:"
+    echo "  ds                          # 启动 TUI 菜单"
+    echo "  ds 'brainstorm一个电商项目'   # 自然语言执行"
+    echo "  ds '用claude设计架构'         # 指定 AI 代理"
+    echo "  ds '生成go代码'               # 指定语言"
+    echo "  ds brainstorm               # 直接执行技能"
+    echo ""
+    echo "Skills / 技能:"
+    echo "  brainstorm, design, code, code-review, test, ship"
+    echo "  debug, doc, refactor"
+    echo ""
+    echo "ACP Agents / AI 代理:"
+    echo "  codex, claude, pi, opencode, gemini, kimi"
+    echo ""
+    echo "Languages / 语言:"
+    echo "  go, python, javascript, typescript, rust"
+}
+
+# Main
+main() {
+    # No arguments - TUI mode
+    if [ $# -eq 0 ]; then
+        tui_mode
+        return
+    fi
+    
+    # Help
+    if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+        show_help
+        return
+    fi
+    
+    # Version
+    if [ "$1" = "--version" ] || [ "$1" = "-v" ]; then
+        echo "DragonStack v$VERSION"
+        return
+    fi
+    
+    # Check if first argument is a known skill
+    case "$1" in
+        brainstorm|design|code|code-review|test|ship|debug|doc|refactor)
+            # Traditional mode
+            "$DRAGONSTACK_HOME/dragonstack" "$@"
+            ;;
+        *)
+            # Quick mode - natural language
+            quick_mode "$@"
+            ;;
+    esac
+}
+
+main "$@"
