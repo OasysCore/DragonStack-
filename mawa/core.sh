@@ -469,26 +469,49 @@ dispatch_task() {
     local user_input="$1"
     local taskrun_id="$2"
     
-    echo -e "${MAWA_CYAN}🎯 Dispatcher: Analyzing task...${MAWA_NC}"
+    echo "${MAWA_CYAN}🎯 Dispatcher: Analyzing task...${MAWA_NC}"
     
-    # Parse input
-    local atc=$(parse_natural_language "$user_input")
-    local suggested_skill=$(echo "$atc" | grep "Suggested Skill:" | awk '{print $3}')
+    # Simple keyword-based dispatch
+    local suggested_skill="brainstorm"
     
-    echo -e "${MAWA_BLUE}📋 ATC Parsed:${MAWA_NC}"
-    echo "$atc" | sed 's/^/  /'
+    if echo "$user_input" | grep -qiE "(design|架构|设计|schema)"; then
+        suggested_skill="design"
+    elif echo "$user_input" | grep -qiE "(code|write|implement|实现|生成.*代码|写.*代码)"; then
+        suggested_skill="code"
+    elif echo "$user_input" | grep -qiE "(review|检查|审查)"; then
+        suggested_skill="code-review"
+    elif echo "$user_input" | grep -qiE "(test|测试)"; then
+        suggested_skill="test"
+    elif echo "$user_input" | grep -qiE "(ship|deploy|发布|部署)"; then
+        suggested_skill="ship"
+    elif echo "$user_input" | grep -qiE "(debug|fix|bug|修复)"; then
+        suggested_skill="debug"
+    elif echo "$user_input" | grep -qiE "(doc|document|文档)"; then
+        suggested_skill="doc"
+    elif echo "$user_input" | grep -qiE "(refactor|重构|优化)"; then
+        suggested_skill="refactor"
+    elif echo "$user_input" | grep -qiE "(brainstorm|idea|构思|想法)"; then
+        suggested_skill="brainstorm"
+    fi
+    
+    echo "${MAWA_BLUE}📋 ATC Parsed:${MAWA_NC}"
+    echo "  W (What/Why): user_request"
+    echo "  H (How): execute_${suggested_skill}_skill"
+    echo "  A (Automation): partial"
+    echo "  T (Test): validation_required"
+    echo "  Suggested Skill: ${suggested_skill}"
     
     # Check if skill is registered
     local reg_file="${MAWA_REGISTRY_DIR}/${suggested_skill}.reg"
     if [ ! -f "$reg_file" ]; then
-        echo -e "${MAWA_YELLOW}⚠️  Skill not registered: ${suggested_skill}${MAWA_NC}"
-        echo -e "${MAWA_YELLOW}   Auto-registering...${MAWA_NC}"
+        echo "${MAWA_YELLOW}⚠️  Skill not registered: ${suggested_skill}${MAWA_NC}"
+        echo "${MAWA_YELLOW}   Auto-registering...${MAWA_NC}"
         auto_register_skill "$suggested_skill"
     fi
     
     # Get playbook state
     local playbook_state=$(get_playbook_state "$suggested_skill")
-    echo -e "${MAWA_BLUE}📖 Playbook State: ${playbook_state}${MAWA_NC}"
+    echo "${MAWA_BLUE}📖 Playbook State: ${playbook_state}${MAWA_NC}"
     
     # Log dispatch decision
     if [ -n "$taskrun_id" ]; then

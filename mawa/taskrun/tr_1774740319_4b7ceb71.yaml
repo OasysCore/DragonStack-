@@ -1,0 +1,62 @@
+# TaskRun / 任务执行记录
+# ID: tr_1774740319_4b7ceb71
+
+metadata:
+  taskrun_id: tr_1774740319_4b7ceb71
+  task_name: 🎯 Dispatcher: Analyzing task...
+📋 ATC Parsed:
+  ATC:
+    W (What/Why): general_task
+    H (How): analyze_and_execute
+    A (Automation): partial
+    T (Test): validation_required
+    Suggested Skill: brainstorm
+⚠️  Skill not registered: brainstorm
+   Auto-registering...
+✅ Registered skill: brainstorm v3.0.0
+📖 Initialized playbook for: brainstorm (pilot)
+📖 Playbook State: pilot
+brainstorm_execution
+  skill: 🎯 Dispatcher: Analyzing task...
+📋 ATC Parsed:
+  ATC:
+    W (What/Why): general_task
+    H (How): analyze_and_execute
+    A (Automation): partial
+    T (Test): validation_required
+    Suggested Skill: brainstorm
+⚠️  Skill not registered: brainstorm
+   Auto-registering...
+✅ Registered skill: brainstorm v3.0.0
+📖 Initialized playbook for: brainstorm (pilot)
+📖 Playbook State: pilot
+brainstorm
+  started_at: 2026-03-28T23:25:19Z
+  status: running
+  
+input:
+  user_command: "./dragonstack 🎯 Dispatcher: Analyzing task...
+📋 ATC Parsed:
+  ATC:
+    W (What/Why): general_task
+    H (How): analyze_and_execute
+    A (Automation): partial
+    T (Test): validation_required
+    Suggested Skill: brainstorm
+⚠️  Skill not registered: brainstorm
+   Auto-registering...
+✅ Registered skill: brainstorm v3.0.0
+📖 Initialized playbook for: brainstorm (pilot)
+📖 Playbook State: pilot
+brainstorm "
+  
+execution_chain: []
+
+output:
+  result: null
+  artifacts: []
+  
+metrics:
+  duration_ms: 0
+  tokens_used: 0
+  api_calls: 0

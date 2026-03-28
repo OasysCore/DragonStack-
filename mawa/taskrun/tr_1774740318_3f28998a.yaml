@@ -1,0 +1,31 @@
+# TaskRun / 任务执行记录
+# ID: tr_1774740318_3f28998a
+
+metadata:
+  taskrun_id: tr_1774740318_3f28998a
+  task_name: natural_language_dispatch
+  skill: dispatcher
+  started_at: 2026-03-28T23:25:18Z
+  status: running
+  
+input:
+  user_command: "帮我生成一个 Go 的 HTTP 服务器代码"
+  
+execution_chain: []
+  - step: user_confirmation
+    type: decision
+    timestamp: 2026-03-28T23:25:18Z
+    details: confirmed
+  - step: dispatch
+    type: decision
+    timestamp: 2026-03-28T23:25:18Z
+    details: routed_to_brainstorm
+
+output:
+  result: null
+  artifacts: []
+  
+metrics:
+  duration_ms: 0
+  tokens_used: 0
+  api_calls: 0
