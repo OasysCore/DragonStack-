@@ -475,7 +475,727 @@ Data Layer (PostgreSQL)
 - [ ] 性能是否满足要求？
 - [ ] 安全是否考虑周全？
 
+## 3.3 Code - 高质量代码生成技巧
+
+### 什么是 Code？
+
+Code 技能是 DragonStack 最核心的功能，将设计文档转化为**可运行的代码**。
+
+### 使用场景
+
+- 根据架构设计生成代码框架
+- 快速实现具体功能模块
+- 生成样板代码（Boilerplate）
+
+### 使用方法
+
+```bash
+$ ds code
+# 或
+$ ds "code [具体需求]"
+# 或使用 ACP
+$ ds "code [需求] --use-acp codex"
+```
+
+### 实战案例：实现用户认证模块
+
+**基于上一节的架构设计**：
+
+```bash
+$ ds "code 用户认证模块，包含：
+  - JWT 登录/注册
+  - 密码加密 (bcrypt)
+  - 中间件验证
+  - 错误处理
+  技术栈：Node.js + Express + PostgreSQL + Prisma"
+```
+
+**生成的代码结构**：
+
+```javascript
+// src/controllers/auth.js
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient();
+const JWT_SECRET = process.env.JWT_SECRET;
+const SALT_ROUNDS = 12;
+
+/**
+ * 用户注册
+ * POST /api/auth/register
+ */
+async function register(req, res) {
+  try {
+    const { email, password, name } = req.body;
+    
+    // 验证输入
+    if (!email || !password) {
+      return res.status(400).json({
+        error: 'Email and password are required'
+      });
+    }
+    
+    // 检查用户是否已存在
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    });
+    
+    if (existingUser) {
+      return res.status(409).json({
+        error: 'User already exists'
+      });
+    }
+    
+    // 密码加密
+    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+    
+    // 创建用户
+    const user = await prisma.user.create({
+      data: {
+        email,
+        passwordHash,
+        name
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        createdAt: true
+      }
+    });
+    
+    // 生成 JWT
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+    
+    res.status(201).json({
+      token,
+      user
+    });
+    
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({
+      error: 'Internal server error'
+    });
+  }
+}
+
+/**
+ * 用户登录
+ * POST /api/auth/login
+ */
+async function login(req, res) {
+  try {
+    const { email, password } = req.body;
+    
+    // 查找用户
+    const user = await prisma.user.findUnique({
+      where: { email }
+    });
+    
+    if (!user) {
+      return res.status(401).json({
+        error: 'Invalid credentials'
+      });
+    }
+    
+    // 验证密码
+    const isValid = await bcrypt.compare(password, user.passwordHash);
+    
+    if (!isValid) {
+      return res.status(401).json({
+        error: 'Invalid credentials'
+      });
+    }
+    
+    // 生成 JWT
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+    
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name
+      }
+    });
+    
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({
+      error: 'Internal server error'
+    });
+  }
+}
+
+module.exports = {
+  register,
+  login
+};
+```
+
+```javascript
+// src/middleware/auth.js
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = process.env.JWT_SECRET;
+
+/**
+ * JWT 验证中间件
+ */
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+  
+  if (!token) {
+    return res.status(401).json({
+      error: 'Access token required'
+    });
+  }
+  
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({
+        error: 'Invalid or expired token'
+      });
+    }
+    
+    req.userId = decoded.userId;
+    req.userEmail = decoded.email;
+    next();
+  });
+}
+
+module.exports = {
+  authenticateToken
+};
+```
+
+### Code 最佳实践
+
+#### 1. 渐进式生成
+
+不要试图一次性生成整个项目，而是分模块进行：
+
+```bash
+# 先生成数据层
+$ ds "code Prisma schema for user, document, generation models"
+
+# 再生成服务层
+$ ds "code user service with CRUD operations"
+
+# 最后生成控制器
+$ ds "code auth controller with login/register endpoints"
+```
+
+#### 2. 指定代码风格
+
+```bash
+$ ds "code with style:
+  - Use TypeScript strict mode
+  - Functional programming style
+  - Async/await (no callbacks)
+  - Comprehensive JSDoc comments"
+```
+
+#### 3. 包含测试用例
+
+```bash
+$ ds "code user authentication module with:
+  - Implementation code
+  - Unit tests (Jest)
+  - Integration tests
+  - Test coverage > 80%"
+```
+
 ---
 
-*第三章继续编写中...*  
-*当前进度: 3.1 Brainstorm ✅, 3.2 Design ✅*
+## 3.4 Review - AI 辅助代码审查
+
+### 什么是 Review？
+
+Review 技能帮助你在提交代码前发现潜在问题，提升代码质量。
+
+### 使用场景
+
+- 代码提交前的自我审查
+- 学习代码审查的最佳实践
+- 发现安全漏洞和性能问题
+
+### 使用方法
+
+```bash
+$ ds review
+# 或
+$ ds "review [文件路径或代码]"
+```
+
+### 实战案例：审查用户认证代码
+
+```bash
+$ ds "review src/controllers/auth.js，重点关注：
+  - 安全漏洞（SQL注入、XSS等）
+  - 性能问题
+  - 错误处理
+  - 代码可读性"
+```
+
+**生成的审查报告**：
+
+```markdown
+# Code Review Report: auth.js
+
+## 总体评分: 8.5/10
+
+## 安全问题 🔒
+
+### ✅ 做得好
+- 使用 bcrypt 进行密码加密
+- JWT Token 有过期时间
+- 密码验证使用 timing-safe 比较
+
+### ⚠️ 需要改进
+1. **缺少速率限制**
+   - 问题：登录接口没有防暴力破解
+   - 建议：添加 express-rate-limit
+   ```javascript
+   const rateLimit = require('express-rate-limit');
+   
+   const loginLimiter = rateLimit({
+     windowMs: 15 * 60 * 1000, // 15分钟
+     max: 5, // 最多5次
+     message: 'Too many login attempts'
+   });
+   
+   app.use('/api/auth/login', loginLimiter);
+   ```
+
+2. **错误信息泄露**
+   - 问题：注册时返回 "User already exists" 可能泄露用户信息
+   - 建议：统一返回 "Registration failed"
+
+## 性能问题 ⚡
+
+### ⚠️ 建议优化
+1. **数据库连接**
+   - 当前每次请求都创建新连接
+   - 建议使用连接池
+
+2. **密码哈希成本**
+   - bcrypt cost=12 可能过慢
+   - 建议根据硬件调整 (10-12)
+
+## 代码质量 📐
+
+### ✅ 优点
+- 清晰的函数命名
+- 适当的注释
+- 一致的代码风格
+
+### ⚠️ 改进建议
+1. **输入验证**
+   - 建议使用 Joi 或 Zod 进行 Schema 验证
+   
+2. **日志记录**
+   - 使用结构化日志（Winston/Pino）
+   - 区分不同级别的日志
+
+## 具体改进代码
+
+```javascript
+// 改进后的注册函数
+async function register(req, res) {
+  try {
+    const { error, value } = registerSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        error: 'Invalid input',
+        details: error.details
+      });
+    }
+    
+    const { email, password, name } = value;
+    
+    // 检查用户是否存在（不暴露具体信息）
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    });
+    
+    if (existingUser) {
+      // 统一错误信息
+      logger.info('Registration attempt for existing email', { email });
+      return res.status(400).json({
+        error: 'Registration failed'
+      });
+    }
+    
+    // ... 其余代码
+    
+  } catch (error) {
+    logger.error('Registration error', { error: error.message });
+    res.status(500).json({
+      error: 'Internal server error'
+    });
+  }
+}
+```
+
+## 行动项
+
+- [ ] 添加速率限制中间件
+- [ ] 统一错误信息
+- [ ] 实现输入验证 Schema
+- [ ] 添加结构化日志
+```
+
+### Review 检查清单
+
+使用 Review 时，可以指定不同的检查维度：
+
+```bash
+# 安全审查
+$ ds "review --focus=security"
+
+# 性能审查
+$ ds "review --focus=performance"
+
+# 全面审查
+$ ds "review --focus=all"
+```
+
+---
+
+## 3.5 Test - 自动化测试策略
+
+### 什么是 Test？
+
+Test 技能帮助你生成测试计划和测试用例，确保代码质量。
+
+### 使用方法
+
+```bash
+$ ds test
+# 或
+$ ds "test [模块名称]"
+```
+
+### 实战案例：为用户认证模块生成测试
+
+```bash
+$ ds "test 用户认证模块，包含：
+  - 单元测试（Jest）
+  - 集成测试（Supertest）
+  - 测试覆盖率 > 80%"
+```
+
+**生成的测试代码**：
+
+```javascript
+// tests/auth.test.js
+const request = require('supertest');
+const app = require('../src/app');
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient();
+
+describe('Auth API', () => {
+  beforeAll(async () => {
+    // 清理测试数据
+    await prisma.user.deleteMany();
+  });
+  
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
+  
+  describe('POST /api/auth/register', () => {
+    it('should register a new user', async () => {
+      const response = await request(app)
+        .post('/api/auth/register')
+        .send({
+          email: 'test@example.com',
+          password: 'password123',
+          name: 'Test User'
+        });
+      
+      expect(response.status).toBe(201);
+      expect(response.body).toHaveProperty('token');
+      expect(response.body.user).toHaveProperty('email', 'test@example.com');
+    });
+    
+    it('should reject duplicate email', async () => {
+      // 先注册一个用户
+      await request(app)
+        .post('/api/auth/register')
+        .send({
+          email: 'duplicate@example.com',
+          password: 'password123'
+        });
+      
+      // 再次注册相同邮箱
+      const response = await request(app)
+        .post('/api/auth/register')
+        .send({
+          email: 'duplicate@example.com',
+          password: 'password123'
+        });
+      
+      expect(response.status).toBe(400);
+    });
+    
+    it('should validate input', async () => {
+      const response = await request(app)
+        .post('/api/auth/register')
+        .send({
+          email: 'invalid-email',
+          password: '123' // 太短
+        });
+      
+      expect(response.status).toBe(400);
+    });
+  });
+  
+  describe('POST /api/auth/login', () => {
+    beforeEach(async () => {
+      // 创建测试用户
+      await request(app)
+        .post('/api/auth/register')
+        .send({
+          email: 'login@example.com',
+          password: 'password123'
+        });
+    });
+    
+    it('should login with valid credentials', async () => {
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+          email: 'login@example.com',
+          password: 'password123'
+        });
+      
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('token');
+    });
+    
+    it('should reject invalid credentials', async () => {
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+          email: 'login@example.com',
+          password: 'wrongpassword'
+        });
+      
+      expect(response.status).toBe(401);
+    });
+  });
+});
+```
+
+---
+
+## 3.6 Ship - 发布部署自动化
+
+### 什么是 Ship？
+
+Ship 技能帮助你自动化发布流程，包括代码提交、版本标记、部署等。
+
+### 使用方法
+
+```bash
+$ ds ship
+```
+
+### 功能
+
+Ship 会执行以下操作：
+
+1. **代码检查**
+   - 运行 linter
+   - 运行测试
+   - 检查代码覆盖率
+
+2. **版本管理**
+   - 更新版本号
+   - 生成 CHANGELOG
+   - 创建 Git tag
+
+3. **部署**
+   - 构建生产版本
+   - 部署到服务器
+   - 健康检查
+
+### 实战案例
+
+```bash
+$ ds ship
+
+# 输出：
+🚀 Preparing to ship...
+✅ Tests passing (42/42)
+✅ Linting passed
+✅ Coverage: 87%
+📦 Building production bundle...
+✅ Build successful
+🏷️  Creating tag v1.2.0...
+📤 Deploying to production...
+✅ Deployment successful
+🎉 Ship complete! v1.2.0 is live.
+```
+
+---
+
+## 3.7 Debug - 智能调试方法
+
+### 什么是 Debug？
+
+Debug 技能帮助你诊断和修复系统中的问题。
+
+### 使用方法
+
+```bash
+$ ds debug
+# 或
+$ ds "debug [问题描述]"
+```
+
+### 实战案例
+
+```bash
+$ ds "debug 为什么用户登录后 Token 很快就过期"
+```
+
+**生成的调试报告**：
+
+```markdown
+# Debug Report: Token Expiration Issue
+
+## 问题分析
+
+### 症状
+- 用户登录后 1 小时内 Token 失效
+- 预期是 24 小时
+
+### 可能原因
+1. JWT 配置错误
+2. 服务器时间不同步
+3. 客户端缓存问题
+
+## 诊断步骤
+
+### 1. 检查 JWT 配置
+```javascript
+// 当前配置
+jwt.sign(payload, secret, { expiresIn: '1h' }); // ❌ 1小时
+
+// 应该改为
+jwt.sign(payload, secret, { expiresIn: '24h' }); // ✅ 24小时
+```
+
+### 2. 检查服务器时间
+```bash
+date # 确保服务器时间正确
+```
+
+### 3. 检查客户端存储
+```javascript
+// 确保使用 localStorage 而不是 sessionStorage
+localStorage.setItem('token', token);
+```
+
+## 解决方案
+
+修改 `src/utils/jwt.js`：
+
+```javascript
+const TOKEN_EXPIRY = '24h'; // 从 1h 改为 24h
+
+function generateToken(payload) {
+  return jwt.sign(payload, JWT_SECRET, {
+    expiresIn: TOKEN_EXPIRY
+  });
+}
+```
+```
+
+---
+
+## 3.8 Doc - 文档生成与维护
+
+### 什么是 Doc？
+
+Doc 技能帮助你自动生成项目文档，包括 API 文档、README 等。
+
+### 使用方法
+
+```bash
+$ ds doc
+# 或
+$ ds "doc --api"      # 生成 API 文档
+$ ds "doc --readme"   # 生成 README
+```
+
+---
+
+## 3.9 Refactor - 代码重构实践
+
+### 什么是 Refactor？
+
+Refactor 技能帮助你改进代码结构，提升可维护性。
+
+### 使用方法
+
+```bash
+$ ds refactor
+# 或
+$ ds "refactor [目标]"
+```
+
+### 实战案例
+
+```bash
+$ ds "refactor 将回调函数改为 async/await"
+$ ds "refactor 提取重复代码为公共函数"
+$ ds "refactor 优化数据库查询性能"
+```
+
+---
+
+## 本章小结
+
+### 9 个技能速查表
+
+| 技能 | 用途 | 关键输出 |
+|------|------|----------|
+| Brainstorm | 产品构思 | 需求文档 |
+| Design | 架构设计 | 技术方案 |
+| Code | 代码生成 | 可运行代码 |
+| Review | 代码审查 | 审查报告 |
+| Test | 测试规划 | 测试用例 |
+| Ship | 发布部署 | 上线版本 |
+| Debug | 问题诊断 | 调试报告 |
+| Doc | 文档生成 | 项目文档 |
+| Refactor | 代码重构 | 改进代码 |
+
+### 最佳实践
+
+1. **按顺序使用**：Brainstorm → Design → Code → Review → Test → Ship
+2. **迭代优化**：每个阶段都可以反复使用技能 refine
+3. **人工审核**：AI 生成后务必人工检查
+4. **文档化**：每个技能都生成文档，便于追溯
+
+---
+
+*第三章完成 | Completed Chapter 3*  
+*编写时间: 2026-03-28*  
+*字数: ~8000字 (中英文)*
