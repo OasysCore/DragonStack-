@@ -11,14 +11,24 @@
 DRAGONSTACK_VERSION="3.0.0"
 DRAGONSTACK_MAWA_VERSION="1.0.0"
 
-# Colors
-MAWA_RED='\033[0;31m'
-MAWA_GREEN='\033[0;32m'
-MAWA_YELLOW='\033[1;33m'
-MAWA_BLUE='\033[0;34m'
-MAWA_CYAN='\033[0;36m'
-MAWA_PURPLE='\033[0;35m'
-MAWA_NC='\033[0m'
+# Colors - using tput for portability
+if command -v tput &> /dev/null && [ -n "$TERM" ] && [ "$TERM" != "dumb" ]; then
+    MAWA_RED=$(tput setaf 1)
+    MAWA_GREEN=$(tput setaf 2)
+    MAWA_YELLOW=$(tput setaf 3)
+    MAWA_BLUE=$(tput setaf 4)
+    MAWA_PURPLE=$(tput setaf 5)
+    MAWA_CYAN=$(tput setaf 6)
+    MAWA_NC=$(tput sgr0)
+else
+    MAWA_RED=""
+    MAWA_GREEN=""
+    MAWA_YELLOW=""
+    MAWA_BLUE=""
+    MAWA_PURPLE=""
+    MAWA_CYAN=""
+    MAWA_NC=""
+fi
 
 # MAWA Paths
 MAWA_DIR="${SCRIPT_DIR}/mawa"
@@ -210,12 +220,17 @@ update_playbook_metrics() {
         failed=$((failed + 1))
     fi
     
-    # Update file
-    sed -i.bak "s/total_executions: .*/total_executions: ${total}/" "$playbook_file"
-    sed -i.bak "s/successful_executions: .*/successful_executions: ${successful}/" "$playbook_file"
-    sed -i.bak "s/failed_executions: .*/failed_executions: ${failed}/" "$playbook_file"
-    sed -i.bak "s/last_execution_at: .*/last_execution_at: $(date -u +"%Y-%m-%dT%H:%M:%SZ")/" "$playbook_file"
-    rm -f "${playbook_file}.bak"
+    # Update file using awk for cross-platform compatibility
+    awk -v tot="$total" -v suc="$successful" -v fail="$failed" -v ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ") '
+        { 
+            gsub(/total_executions: .*/, "total_executions: " tot)
+            gsub(/successful_executions: .*/, "successful_executions: " suc)
+            gsub(/failed_executions: .*/, "failed_executions: " fail)
+            gsub(/last_execution_at: .*/, "last_execution_at: " ts)
+            print
+        }
+    ' "$playbook_file" > "${playbook_file}.tmp"
+    mv "${playbook_file}.tmp" "$playbook_file"
     
     # Check for evolution
     check_playbook_evolution "$skill_name"
@@ -239,23 +254,23 @@ check_playbook_evolution() {
     case "$current_state" in
         "$PLAYBOOK_STATE_PILOT")
             if [ "$total" -ge 10 ] && [ "$(echo "$success_rate >= 0.7" | bc -l)" -eq 1 ]; then
-                sed -i.bak "s/current_state: .*/current_state: ${PLAYBOOK_STATE_BETA}/" "$playbook_file"
-                rm -f "${playbook_file}.bak"
-                echo -e "${MAWA_GREEN}🎉 Playbook evolved: ${skill_name} → ${PLAYBOOK_STATE_BETA}${MAWA_NC}"
+                awk -v state="$PLAYBOOK_STATE_BETA" '{ gsub(/current_state: .*/, "current_state: " state); print }' "$playbook_file" > "${playbook_file}.tmp"
+                mv "${playbook_file}.tmp" "$playbook_file"
+                echo "${MAWA_GREEN}🎉 Playbook evolved: ${skill_name} → ${PLAYBOOK_STATE_BETA}${MAWA_NC}"
             fi
             ;;
         "$PLAYBOOK_STATE_BETA")
             if [ "$total" -ge 50 ] && [ "$(echo "$success_rate >= 0.85" | bc -l)" -eq 1 ]; then
-                sed -i.bak "s/current_state: .*/current_state: ${PLAYBOOK_STATE_STABLE}/" "$playbook_file"
-                rm -f "${playbook_file}.bak"
-                echo -e "${MAWA_GREEN}🎉 Playbook evolved: ${skill_name} → ${PLAYBOOK_STATE_STABLE}${MAWA_NC}"
+                awk -v state="$PLAYBOOK_STATE_STABLE" '{ gsub(/current_state: .*/, "current_state: " state); print }' "$playbook_file" > "${playbook_file}.tmp"
+                mv "${playbook_file}.tmp" "$playbook_file"
+                echo "${MAWA_GREEN}🎉 Playbook evolved: ${skill_name} → ${PLAYBOOK_STATE_STABLE}${MAWA_NC}"
             fi
             ;;
         "$PLAYBOOK_STATE_STABLE")
             if [ "$total" -ge 100 ] && [ "$(echo "$success_rate >= 0.95" | bc -l)" -eq 1 ]; then
-                sed -i.bak "s/current_state: .*/current_state: ${PLAYBOOK_STATE_SOTA}/" "$playbook_file"
-                rm -f "${playbook_file}.bak"
-                echo -e "${MAWA_PURPLE}🏆 Playbook evolved: ${skill_name} → ${PLAYBOOK_STATE_SOTA} (State of the Art)${MAWA_NC}"
+                awk -v state="$PLAYBOOK_STATE_SOTA" '{ gsub(/current_state: .*/, "current_state: " state); print }' "$playbook_file" > "${playbook_file}.tmp"
+                mv "${playbook_file}.tmp" "$playbook_file"
+                echo "${MAWA_PURPLE}🏆 Playbook evolved: ${skill_name} → ${PLAYBOOK_STATE_SOTA} (State of the Art)${MAWA_NC}"
             fi
             ;;
     esac
@@ -316,15 +331,20 @@ log_taskrun_step() {
         return 1
     fi
     
-    local step_entry="  - step: ${step_name}
-    type: ${step_type}
-    timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
-    details: ${details}"
-    
-    # Append to execution_chain
-    sed -i.bak "/execution_chain: \[\]/a\\
-${step_entry}" "$taskrun_file"
-    rm -f "${taskrun_file}.bak"
+    # Create temp file with new step appended
+    local temp_file="${taskrun_file}.tmp"
+    awk -v step="$step_name" -v stype="$step_type" -v ts="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" -v det="$details" '
+        /execution_chain: \[\]/ {
+            print
+            print "  - step: " step
+            print "    type: " stype
+            print "    timestamp: " ts
+            print "    details: " det
+            next
+        }
+        { print }
+    ' "$taskrun_file" > "$temp_file"
+    mv "$temp_file" "$taskrun_file"
 }
 
 # Complete task run
@@ -340,10 +360,16 @@ complete_taskrun() {
         return 1
     fi
     
-    sed -i.bak "s/status: running/status: ${status}/" "$taskrun_file"
-    sed -i.bak "s/result: null/result: ${result}/" "$taskrun_file"
-    sed -i.bak "s/duration_ms: 0/duration_ms: ${duration_ms}/" "$taskrun_file"
-    rm -f "${taskrun_file}.bak"
+    # Use awk for cross-platform compatibility
+    awk -v st="$status" -v res="$result" -v dur="$duration_ms" '
+        { 
+            gsub(/status: running/, "status: " st)
+            gsub(/result: null/, "result: " res)
+            gsub(/duration_ms: 0/, "duration_ms: " dur)
+            print
+        }
+    ' "$taskrun_file" > "${taskrun_file}.tmp"
+    mv "${taskrun_file}.tmp" "$taskrun_file"
     
     # Update playbook metrics
     local skill_name=$(grep "skill:" "$taskrun_file" | head -1 | awk '{print $2}')
@@ -570,13 +596,13 @@ auto_register_skill() {
 # ============================================
 
 mawa_status() {
-    echo -e "${MAWA_CYAN}🐉 DragonStack MAWA Status${MAWA_NC}"
+    printf "${MAWA_CYAN}🐉 DragonStack MAWA Status${MAWA_NC}\n"
     echo "=========================="
     echo ""
-    echo -e "${MAWA_BLUE}Version:${MAWA_NC} ${DRAGONSTACK_VERSION} (MAWA ${DRAGONSTACK_MAWA_VERSION})"
+    printf "${MAWA_BLUE}Version:${MAWA_NC} ${DRAGONSTACK_VERSION} (MAWA ${DRAGONSTACK_MAWA_VERSION})\n"
     echo ""
     
-    echo -e "${MAWA_GREEN}Registered Skills:${MAWA_NC}"
+    printf "${MAWA_GREEN}Registered Skills:${MAWA_NC}\n"
     local count=0
     for reg in "${MAWA_REGISTRY_DIR}"/*.reg; do
         if [ -f "$reg" ]; then
@@ -591,7 +617,7 @@ mawa_status() {
     echo "Total: $count skills registered"
     echo ""
     
-    echo -e "${MAWA_YELLOW}Recent TaskRuns:${MAWA_NC}"
+    printf "${MAWA_YELLOW}Recent TaskRuns:${MAWA_NC}\n"
     get_recent_taskruns 5 | sed 's/^/  /'
 }
 

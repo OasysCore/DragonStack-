@@ -1,0 +1,23 @@
+# TaskRun / 任务执行记录
+# ID: tr_1774740236_4983d7aa
+
+metadata:
+  taskrun_id: tr_1774740236_4983d7aa
+  task_name: natural_language_dispatch
+  skill: dispatcher
+  started_at: 2026-03-28T23:23:56Z
+  status: cancelled
+  
+input:
+  user_command: "帮我设计一个电商系统"
+  
+execution_chain: []
+
+output:
+  result: user_cancelled
+  artifacts: []
+  
+metrics:
+  duration_ms: 0
+  tokens_used: 0
+  api_calls: 0
