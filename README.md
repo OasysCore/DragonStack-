@@ -3,7 +3,7 @@
 > **AI-powered development workflow with MAWA Governance**  
 > **MAWA 治理的 AI 驱动开发工作流**
 
-[![Version](https://img.shields.io/badge/version-3.0-blue.svg)](https://github.com/OasysCore/DragonStack-)
+[![Version](https://img.shields.io/badge/version-3.0--2026.03.29-blue.svg)](https://github.com/OasysCore/DragonStack-)
 [![MAWA](https://img.shields.io/badge/MAWA-Integrated-purple.svg)](https://github.com/Capsio-Michael/mawa)
 [![Platform](https://img.shields.io/badge/platform-Trae%20%7C%20Cursor-green.svg)](https://www.trae.ai/)
 [![ACP](https://img.shields.io/badge/ACP-Supported-orange.svg)](https://docs.openclaw.ai/tools/acp-agents)
@@ -302,7 +302,7 @@ git config --global user.email "your@email.com"
 
 ## 🆕 更新日志
 
-### v3.0.0 (2026-03-29)
+### v3.0-2026.03.29 (2026-03-29)
 - ✅ **MAWA Governance Layer** - Registration/Playbook/TaskRun/Dispatcher
 - ✅ **Natural Language Dispatch** - 自然语言路由
 - ✅ **Skill Evolution** - PILOT → BETA → STABLE → SOTA
@@ -428,7 +428,7 @@ Copyright (c) 2026 OASYS CORE INTERNATIONAL LIMITED / 潤芯國際(香港)有限
 ---
 
 <p align="center">
-  <strong>DragonStack 3.0</strong><br>
+  <strong>DragonStack 3.0-2026.03.29</strong><br>
   <em>MAWA Governance × AI Development / MAWA 治理 × AI 开发</em><br>
   <br>
   🐉

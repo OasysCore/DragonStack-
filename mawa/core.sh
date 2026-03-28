@@ -8,8 +8,8 @@
 # - TaskRun: 审计日志和追踪
 # - Dispatcher: 智能路由引擎
 
-DRAGONSTACK_VERSION="3.0.0"
-DRAGONSTACK_MAWA_VERSION="1.0.0"
+DRAGONSTACK_VERSION="3.0-2026.03.29"
+DRAGONSTACK_MAWA_VERSION="1.0-2026.03.29"
 
 # Colors - using tput for portability
 if command -v tput &> /dev/null && [ -n "$TERM" ] && [ "$TERM" != "dumb" ]; then

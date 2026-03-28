@@ -1,9 +1,11 @@
 # DragonStack 3.0.0 Release Notes
 
-## 🎉 DragonStack 3.0.0 - MAWA Governance
+## 🎉 DragonStack 3.0-2026.03.29 - MAWA Governance
 
 **Release Date:** March 29, 2026  
 **Codename:** "Governance"
+
+**Version Format:** X.X-YYYY.MM.DD (Starting with this release)
 
 ---
 
@@ -168,6 +170,22 @@ After migration, you can use:
 
 ---
 
+## 📦 Version Format
+
+Starting from this release, DragonStack uses a new version format:
+
+```
+MAJOR.MINOR-YYYY.MM.DD
+
+Example: 3.0-2026.03.29
+```
+
+- **MAJOR**: Major version (breaking changes)
+- **MINOR**: Minor version (new features)
+- **YYYY.MM.DD**: Release date
+
+This format provides clear timeline visibility and makes it easy to track when each version was released.
+
 ## 📦 Installation
 
 ```bash
@@ -180,8 +198,22 @@ curl -fsSL https://raw.githubusercontent.com/OasysCore/DragonStack-/main/install
 
 ---
 
+## 📋 Completed Features
+
+This release includes all planned 3.0 features:
+
+- ✅ MAWA Governance Layer (Registration/Playbook/TaskRun/Dispatcher)
+- ✅ Natural Language Dispatch Mode
+- ✅ Skill Evolution System (PILOT → BETA → STABLE → SOTA)
+- ✅ Execution Audit Trail
+- ✅ Cross-platform support (macOS/Linux)
+- ✅ Auto-registration of skills
+- ✅ TaskRun logging and history
+
+---
+
 <p align="center">
-  <strong>DragonStack 3.0.0</strong><br>
+  <strong>DragonStack 3.0-2026.03.29</strong><br>
   <em>MAWA Governance × AI Development</em><br>
   <br>
   🐉

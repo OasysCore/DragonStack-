@@ -40,7 +40,7 @@ show_banner() {
     echo ""
     echo -e "${CYAN}🐉 DragonStack - AI-Powered Development Workflow${NC}"
     echo -e "${CYAN}   龙栈 - AI 驱动的开发工作流${NC}"
-    echo -e "${PURPLE}   v3.0.0 with MAWA Governance${NC}"
+    echo "${PURPLE}   v3.0-2026.03.29 with MAWA Governance${NC}"
     echo ""
 }
 
@@ -90,8 +90,8 @@ show_help() {
 
 # Show version
 show_version() {
-    echo "DragonStack v3.0.0"
-    echo "MAWA Governance v1.0.0"
+    echo "DragonStack v3.0-2026.03.29"
+    echo "MAWA Governance v1.0-2026.03.29"
     echo "Copyright (c) 2026 OASYS CORE INTERNATIONAL LIMITED"
     echo "Built with ❤️  for AI-powered development"
     echo ""
