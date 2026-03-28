@@ -403,7 +403,9 @@ ATC:
 
 DragonStack is inspired by:
 - [gstack](https://github.com/garrytan/gstack) by Garry Tan
-- [MAWA](https://github.com/Capsio-Michael/mawa) by Capsio-Michael
+- [MAWA](https://github.com/Capsio-Michael/mawa) by Dr. Michael Li ([@Capsio-Michael](https://github.com/Capsio-Michael))
+
+Special thanks to Dr. Michael Li for creating the MAWA (Managing Agent + Worker Agent) architecture, which forms the governance foundation of DragonStack 3.0.
 
 感谢开源社区提供的工具和灵感。
 
