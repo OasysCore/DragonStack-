@@ -1,0 +1,44 @@
+# Playbook / 执行策略
+# Skill: code
+# Evolution: PILOT → BETA → STABLE → SOTA
+
+metadata:
+  skill: code
+  created_at: 2026-03-28T23:26:07Z
+  current_state: pilot
+  version: 1.0.0
+  
+strategy:
+  default_strategy: standard_execution
+
+execution:
+  max_retries: 3
+  timeout_seconds: 300
+  require_confirmation: false
+  
+evolution:
+  pilot:
+    description: "Initial implementation, manual review required"
+    auto_promote_after: 10
+    success_rate_threshold: 0.7
+    
+  beta:
+    description: "Tested implementation, reduced oversight"
+    auto_promote_after: 50
+    success_rate_threshold: 0.85
+    
+  stable:
+    description: "Proven implementation, minimal oversight"
+    auto_promote_after: 100
+    success_rate_threshold: 0.95
+    
+  sota:
+    description: "State of the Art, self-improving"
+    continuous_learning: true
+    
+metrics:
+  total_executions: 0
+  successful_executions: 0
+  failed_executions: 0
+  average_duration_ms: 0
+  last_execution_at: null
