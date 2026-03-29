@@ -1,0 +1,231 @@
+# DragonStack Assistant - Tech Stack Database
+# Version: 3.1-2026.03.29
+
+stacks:
+  # 交易系统 / Trading Systems
+  trading:
+    name: "量化交易系统"
+    complexity: high
+    description: "高频、低延迟、实时数据处理"
+    
+    python:
+      name: "Python 量化栈"
+      framework: 
+        name: "FastAPI"
+        reason: "异步高性能，适合实时交易"
+      database:
+        - name: "InfluxDB"
+          use: "时序行情数据"
+        - name: "PostgreSQL"
+          use: "交易记录、策略配置"
+        - name: "Redis"
+          use: "实时状态、缓存"
+      libraries:
+        - name: "python-binance"
+          use: "币安官方SDK"
+        - name: "pandas"
+          use: "数据分析"
+        - name: "numpy"
+          use: "数值计算"
+        - name: "TA-Lib"
+          use: "技术指标"
+        - name: "Celery"
+          use: "异步任务队列"
+      monitoring:
+        - "Prometheus"
+        - "Grafana"
+      features:
+        - "async/await 全异步"
+        - "WebSocket 实时推送"
+        - "低延迟订单执行"
+    
+    go:
+      name: "Go 高性能栈"
+      framework:
+        name: "Gin"
+        reason: "编译型语言，延迟最低"
+      database:
+        - name: "InfluxDB"
+          use: "时序数据"
+        - name: "PostgreSQL"
+          use: "交易记录"
+        - name: "Redis"
+          use: "缓存"
+      libraries:
+        - name: "go-binance"
+          use: "币安SDK"
+        - name: "gin"
+          use: "Web框架"
+        - name: "gorm"
+          use: "ORM"
+      features:
+        - "编译型高性能"
+        - "Goroutine 并发"
+        - "内存占用低"
+  
+  # 电商 / E-commerce
+  ecommerce:
+    name: "电商平台"
+    complexity: high
+    description: "高并发、支付集成、库存管理"
+    
+    node:
+      name: "Node.js 全栈"
+      framework:
+        name: "Next.js"
+        reason: "全栈框架，SSR/SSG支持"
+      database:
+        - name: "PostgreSQL"
+          use: "主数据库"
+        - name: "Redis"
+          use: "购物车、会话"
+      libraries:
+        - name: "Prisma"
+          use: "ORM"
+        - name: "Stripe"
+          use: "支付集成"
+        - name: "NextAuth.js"
+          use: "认证"
+      deployment:
+        - "Vercel"
+        - "Docker"
+      features:
+        - "SEO友好"
+        - "服务端渲染"
+        - "支付集成"
+    
+    go:
+      name: "Go 微服务栈"
+      framework:
+        name: "Gin + gRPC"
+        reason: "微服务架构，高性能"
+      database:
+        - name: "PostgreSQL"
+          use: "主数据库"
+        - name: "Redis"
+          use: "缓存"
+        - name: "Elasticsearch"
+          use: "商品搜索"
+      features:
+        - "微服务架构"
+        - "高并发处理"
+  
+  # 博客 / Blog
+  blog:
+    name: "内容管理系统"
+    complexity: low
+    description: "内容发布、SEO优化、评论系统"
+    
+    nextjs:
+      name: "Next.js 现代栈"
+      framework:
+        name: "Next.js 14"
+        reason: "App Router, 性能优秀"
+      styling:
+        name: "Tailwind CSS"
+        reason: "原子化CSS，开发快速"
+      content:
+        name: "MDX"
+        reason: "Markdown + React组件"
+      database:
+        - name: "PostgreSQL"
+          use: "文章、用户数据"
+        - name: "Redis"
+          use: "缓存、阅读量"
+      features:
+        - "SSG 静态生成"
+        - "SEO 自动优化"
+        - "暗黑模式"
+        - "代码高亮"
+    
+    astro:
+      name: "Astro 内容优先"
+      framework:
+        name: "Astro"
+        reason: "零JS默认，极速加载"
+      features:
+        - "岛屿架构"
+        - "Partial Hydration"
+        - "内容集合"
+  
+  # 聊天应用 / Chat
+  chat:
+    name: "即时通讯应用"
+    complexity: high
+    description: "实时消息、WebSocket、消息持久化"
+    
+    node:
+      name: "Node.js 实时栈"
+      framework:
+        name: "Socket.io + Express"
+        reason: "WebSocket 实时通信"
+      database:
+        - name: "MongoDB"
+          use: "消息存储"
+        - name: "Redis"
+          use: "在线状态、消息队列"
+      features:
+        - "实时双向通信"
+        - "房间管理"
+        - "消息已读回执"
+  
+  # 管理后台 / Admin
+  admin:
+    name: "企业管理系统"
+    complexity: medium
+    description: "数据管理、权限控制、报表"
+    
+    node:
+      name: "Node.js 管理栈"
+      framework:
+        name: "Next.js"
+        reason: "全栈开发，快速迭代"
+      ui_library:
+        name: "shadcn/ui"
+        reason: "现代UI组件库"
+      features:
+        - "RBAC 权限控制"
+        - "数据表格"
+        - "图表报表"
+
+# 项目类型识别关键词
+project_keywords:
+  trading:
+    - "交易"
+    - "币安"
+    - "量化"
+    - "自动交易"
+    - "binance"
+    - "trading"
+    - "quant"
+  
+  ecommerce:
+    - "电商"
+    - "商城"
+    - "购物"
+    - "ecommerce"
+    - "shop"
+    - "store"
+  
+  blog:
+    - "博客"
+    - "blog"
+    - "内容"
+    - "文章"
+    - "cms"
+  
+  chat:
+    - "聊天"
+    - "消息"
+    - "即时通讯"
+    - "chat"
+    - "messaging"
+    - "websocket"
+  
+  admin:
+    - "后台"
+    - "管理"
+    - "dashboard"
+    - "admin"
+    - "erp"
+    - "crm"

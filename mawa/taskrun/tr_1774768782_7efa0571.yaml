@@ -1,0 +1,31 @@
+# TaskRun / 任务执行记录
+# ID: tr_1774768782_7efa0571
+
+metadata:
+  taskrun_id: tr_1774768782_7efa0571
+  task_name: natural_language_dispatch
+  skill: dispatcher
+  started_at: 2026-03-29T07:19:42Z
+  status: running
+  
+input:
+  user_command: "帮我设计一个贵金属市场行情分析系统"
+  
+execution_chain: []
+  - step: user_confirmation
+    type: decision
+    timestamp: 2026-03-29T07:19:55Z
+    details: confirmed
+  - step: dispatch
+    type: decision
+    timestamp: 2026-03-29T07:19:42Z
+    details: routed_to_design
+
+output:
+  result: null
+  artifacts: []
+  
+metrics:
+  duration_ms: 0
+  tokens_used: 0
+  api_calls: 0
