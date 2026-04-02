@@ -1,0 +1,127 @@
+{
+  "name": "dragonstack-ide",
+  "displayName": "DragonStack IDE",
+  "description": "DragonStack AI development workflow for Trae/Cursor",
+  "version": "3.0.0",
+  "publisher": "oasys-core",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": ["AI", "Productivity", "Snippets"],
+  "keywords": ["AI", "dragonstack", "code generation", "development workflow"],
+  "activationEvents": [
+    "onCommand:dragonstack.openSidebar",
+    "onView:dragonstackSidebar"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "dragonstack.brainstorm",
+        "title": "💭 Brainstorm",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.design",
+        "title": "🎨 Design",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.code",
+        "title": "💻 Code",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.review",
+        "title": "👁️ Review",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.test",
+        "title": "🧪 Test",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.ship",
+        "title": "🚀 Ship",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.debug",
+        "title": "🐛 Debug",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.doc",
+        "title": "📝 Document",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.refactor",
+        "title": "♻️ Refactor",
+        "category": "DragonStack"
+      },
+      {
+        "command": "dragonstack.openSidebar",
+        "title": "Open DragonStack Sidebar",
+        "category": "DragonStack"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "dragonstackSidebar",
+          "name": "DragonStack",
+          "when": "true"
+        }
+      ]
+    },
+    "menus": {
+      "editor/context": [
+        {
+          "command": "dragonstack.code",
+          "group": "dragonstack@1",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "dragonstack.review",
+          "group": "dragonstack@2",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "dragonstack.doc",
+          "group": "dragonstack@3",
+          "when": "editorHasSelection"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "dragonstack.brainstorm"
+        },
+        {
+          "command": "dragonstack.design"
+        },
+        {
+          "command": "dragonstack.code"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "dragonstack.openSidebar",
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "18.x",
+    "typescript": "^5.0.0"
+  }
+}
