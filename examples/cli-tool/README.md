@@ -43,14 +43,11 @@ I need a CLI tool that helps developers bootstrap new projects quickly with:
 
 ### Step 2: Architecture Design / 步骤 2：架构设计
 
-```bash
-/arch-design
-Design the CLI architecture with:
+设计 CLI 架构：
 - Command structure / 命令结构
 - Plugin system / 插件系统
 - Template management / 模板管理
 - Configuration handling / 配置处理
-```
 
 ---
 

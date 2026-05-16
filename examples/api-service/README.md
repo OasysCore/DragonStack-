@@ -47,15 +47,12 @@ Build a task management API with:
 
 ### Step 2: Security Review / 步骤 2：安全审查
 
-```bash
-/security
-Perform security audit for:
+执行 API 安全审查：
 - Authentication mechanisms / 认证机制
 - Input validation / 输入验证
 - SQL injection prevention / SQL 注入防护
 - XSS prevention / XSS 防护
 - Rate limiting / 速率限制
-```
 
 ---
 
@@ -101,7 +98,7 @@ task-api/
 ## 🎯 Key Takeaways / 关键要点
 
 1. **Security is paramount / 安全至上**
-   - `/security` skill is essential for APIs / `/security` 技能对 API 至关重要
+   - Security review is essential for APIs / 安全审查对 API 至关重要
    - Never skip security review / 绝不要跳过安全审查
 
 2. **Documentation matters / 文档很重要**

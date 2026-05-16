@@ -63,15 +63,8 @@ cp -Rf ~/.dragonstack ./.dragonstack
 | 技能 | 描述 | 命令 |
 |-----|------|------|
 | **头脑风暴** | 5W1H 分析进行产品构思 | `/brainstorm` |
-| **CEO 审视** | 范围控制和战略对齐 | `/ceo-review` |
-| **架构设计** | 技术架构和数据流设计 | `/arch-design` |
 | **代码审查** | Staff Engineer 级别代码审查 | `/code-review` |
-| **质量测试** | 使用真实浏览器自动化测试 | `/qa-test` |
-| **安全审计** | OWASP + 等保合规审计 | `/security` |
 | **一键发布** | 测试 → PR → 合并一键完成 | `/ship` |
-| **部署验证** | CI/CD 监控和验证 | `/deploy` |
-| **线上监控** | 部署后监控 | `/monitor` |
-| **周复盘** | 每周复盘和指标统计 | `/retro` |
 
 ### 安全技能
 
@@ -118,13 +111,8 @@ dragonstack/
 │   └── philosophy.md / philosophy.zh.md
 ├── skills/                      # 技能实现
 │   ├── brainstorm/
-│   ├── ceo-review/
-│   ├── arch-design/
 │   ├── code-review/
-│   ├── qa-test/
-│   ├── security/
-│   ├── ship/
-│   └── ...
+│   └── ship/
 ├── templates/                   # 项目模板
 │   ├── TRAE.md.template
 │   ├── CURSOR.md.template

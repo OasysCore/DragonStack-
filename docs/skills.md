@@ -1,7 +1,7 @@
 # DragonStack Skills Reference / 龙栈技能参考
 
 > Complete guide to all DragonStack skills / 所有龙栈技能的完整指南  
-> Version 1.0 | Last Updated: 2026-03-23
+> Version 3.0 | Last Updated: 2026-05-16
 
 ---
 
@@ -23,43 +23,6 @@
 4. Effort estimation / 工作量估算
 
 **Output / 输出**: Design document (feeds into downstream skills) / 设计文档（输入到下游技能）
-
----
-
-### `/ceo-review` - CEO Review / CEO 审视
-
-**Purpose / 目的**: Strategic alignment and scope control / 战略对齐和范围控制
-
-**When to use / 何时使用**:
-- Before major features / 重大功能前
-- Scope creep concerns / 范围蔓延担忧
-- Resource allocation decisions / 资源分配决策
-
-**Modes / 模式**:
-1. **Expansion** / 扩展 - Increase scope for bigger impact
-2. **Selective Expansion** / 选择性扩展 - Expand specific areas
-3. **Hold Scope** / 保持范围 - Maintain current scope
-4. **Reduction** / 缩减 - Reduce scope for faster shipping
-
-**Output / 输出**: Approved scope document / 已批准的范围文档
-
----
-
-### `/arch-design` - Architecture Design / 架构设计
-
-**Purpose / 目的**: Technical architecture and data flow design / 技术架构和数据流设计
-
-**When to use / 何时使用**:
-- New system design / 新系统设计
-- Major refactoring / 重大重构
-- Integration planning / 集成规划
-
-**Deliverables / 交付物**:
-- Data flow diagrams / 数据流图
-- API specifications / API 规范
-- State machines / 状态机
-- Error handling strategy / 错误处理策略
-- Test matrix / 测试矩阵
 
 ---
 
@@ -86,49 +49,6 @@
 
 ---
 
-### `/qa-test` - QA Test / 质量测试
-
-**Purpose / 目的**: Automated testing with real browser / 使用真实浏览器自动化测试
-
-**When to use / 何时使用**:
-- Before release / 发布前
-- Bug verification / 错误验证
-- Regression testing / 回归测试
-
-**Capabilities / 能力**:
-- Real browser automation / 真实浏览器自动化
-- Screenshot comparison / 截图对比
-- Flow validation / 流程验证
-- Bug auto-fix / 错误自动修复
-
-**Output / 输出**:
-- Test report / 测试报告
-- Regression tests / 回归测试
-- Bug fixes (if enabled) / 错误修复（如果启用）
-
----
-
-### `/security` - Security Audit / 安全审计
-
-**Purpose / 目的**: OWASP + 等保 compliance audit / OWASP + 等保合规审计
-
-**When to use / 何时使用**:
-- Before production / 生产环境前
-- Quarterly audits / 季度审计
-- After major changes / 重大变更后
-
-**Standards / 标准**:
-- OWASP Top 10 / OWASP 十大漏洞
-- 等保 2.0 Level 3 / 等保 2.0 三级
-- STRIDE threat model / STRIDE 威胁模型
-
-**Output / 输出**:
-- Security report / 安全报告
-- Risk ratings / 风险评级
-- Remediation plan / 修复计划
-
----
-
 ### `/ship` - Ship / 一键发布
 
 **Purpose / 目的**: Test → PR → Merge in one command / 测试 → PR → 合并一键完成
@@ -152,58 +72,6 @@
 
 ---
 
-### `/deploy` - Deploy / 部署验证
-
-**Purpose / 目的**: CI/CD monitoring and verification / CI/CD 监控和验证
-
-**When to use / 何时使用**:
-- After PR merge / PR 合并后
-- Production deployment / 生产环境部署
-- Rollback verification / 回滚验证
-
-**Process / 流程**:
-1. Wait for CI / 等待 CI
-2. Monitor deploy / 监控部署
-3. Verify health checks / 验证健康检查
-4. Confirm production ready / 确认生产就绪
-
----
-
-### `/monitor` - Monitor / 线上监控
-
-**Purpose / 目的**: Post-deploy monitoring / 部署后监控
-
-**When to use / 何时使用**:
-- After deployment / 部署后
-- Incident response / 事件响应
-- Performance tracking / 性能追踪
-
-**Metrics / 指标**:
-- Error rates / 错误率
-- Response times / 响应时间
-- Resource usage / 资源使用
-- User impact / 用户影响
-
----
-
-### `/retro` - Retro / 周复盘
-
-**Purpose / 目的**: Weekly retrospective and metrics / 每周复盘和指标统计
-
-**When to use / 何时使用**:
-- End of week / 周末
-- Sprint review / 迭代回顾
-- Team sync / 团队同步
-
-**Metrics / 指标**:
-- Lines of code / 代码行数
-- Commits / 提交数
-- Tests added / 新增测试
-- Bugs fixed / 修复错误
-- Shipping streak / 连续发布天数
-
----
-
 ## 🛡️ Safety Skills / 安全技能
 
 ### `/careful` - Careful Mode / 谨慎模式
@@ -216,23 +84,11 @@
 - `git push --force` / 强制推送
 - Database migrations / 数据库迁移
 
-**Usage / 使用**:
-```
-/careful
-# Then proceed with operations
-```
-
 ---
 
 ### `/freeze` - Freeze Mode / 冻结模式
 
 **Purpose / 目的**: Lock editing to specific directory / 锁定编辑到特定目录
-
-**Usage / 使用**:
-```
-/freeze ./src/components
-# Only edits within ./src/components allowed
-```
 
 ---
 
@@ -240,47 +96,24 @@
 
 **Purpose / 目的**: Full safety mode (Careful + Freeze) / 完整安全模式（谨慎+冻结）
 
-**Usage / 使用**:
-```
-/guard ./critical-code
-# Maximum safety for production work
-```
-
 ---
 
 ## 📝 Skill Usage Patterns / 技能使用模式
 
-### Pattern 1: New Feature Development / 新功能开发
-
+### Pattern 1: New Feature / 新功能
 ```
-/brainstorm        → Design document
-/ceo-review        → Scope approval
-/arch-design       → Technical spec
+/brainstorm     → Design document
 [implement code]
-/code-review       → Code validation
-/qa-test           → Testing
-/ship              → Release PR
+/code-review    → Code validation
+/ship           → Release PR
 ```
 
 ### Pattern 2: Bug Fix / 错误修复
-
 ```
-/investigate       → Root cause analysis
+/brainstorm     → Root cause analysis
 [fix code]
-/code-review       → Fix validation
-/qa-test           → Regression test
-/ship              → Hotfix PR
-```
-
-### Pattern 3: Security Patch / 安全补丁
-
-```
-/guard             → Safety mode on
-/security          → Vulnerability scan
-[fix vulnerabilities]
-/code-review       → Security review
-/qa-test           → Testing
-/ship              → Security PR
+/code-review    → Fix validation
+/ship           → Hotfix PR
 ```
 
 ---

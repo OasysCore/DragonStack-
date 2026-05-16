@@ -2,6 +2,9 @@
 # DragonStack 3.0 / 龙栈 3.0
 # Copyright (c) 2026 OASYS CORE INTERNATIONAL LIMITED
 
+# Dependency checks
+command -v bc >/dev/null 2>&1 || { echo "ERROR: bc is required but not installed. Install with: brew install bc (macOS) or apt-get install bc (Linux)"; exit 1; }
+
 # MAWA Architecture:
 # - Registration: Skill 能力边界声明
 # - Playbook: 执行策略和进化机制  

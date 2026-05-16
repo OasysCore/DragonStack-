@@ -113,7 +113,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Copy templates / 复制模板
 echo "📄 Copying templates / 复制模板..."
 # Convert platform to uppercase for template filename (兼容所有平台)
-PLATFORM_UPPER=$(echo "$PLATFORM" | tr '[:lower:]' '[:upper:]')
+local PLATFORM_UPPER=$(echo "$PLATFORM" | tr '[:lower:]' '[:upper:]')
 if [ -f "$SCRIPT_DIR/templates/${PLATFORM_UPPER}.md.template" ]; then
     cp "$SCRIPT_DIR/templates/${PLATFORM_UPPER}.md.template" ./DRAGONSTACK.md
     echo -e "${GREEN}✅ Created DRAGONSTACK.md for $PLATFORM${NC}"

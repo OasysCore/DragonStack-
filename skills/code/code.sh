@@ -88,7 +88,7 @@ if [ "$USE_ACP" = "true" ]; then
     echo ""
     
     # Check if ACP is available
-    if command -v openclaw &> /dev/null || [ -f "/Users/williamchao/.nvm/versions/node/v24.13.0/bin/openclaw" ]; then
+    if command -v openclaw &> /dev/null; then
         echo -e "${GREEN}✅ OpenClaw detected / 检测到 OpenClaw${NC}"
     else
         echo -e "${YELLOW}⚠️  OpenClaw not found in PATH / PATH 中未找到 OpenClaw${NC}"

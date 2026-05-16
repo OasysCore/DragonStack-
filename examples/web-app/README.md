@@ -45,17 +45,13 @@ I want to build a Todo app with the following features:
 
 ### Step 2: Architecture Design / 步骤 2：架构设计
 
-```bash
-/arch-design
-Design the technical architecture for the Todo app based on the brainstorm output.
-根据头脑风暴输出设计 Todo 应用的技术架构。
-```
-
-**Output / 输出**: `docs/architecture.md`
+基于头脑风暴输出设计 Todo 应用的技术架构：
 - Data flow diagram / 数据流图
 - API endpoints / API 端点
 - Database schema / 数据库模式
 - Component structure / 组件结构
+
+**Output / 输出**: `docs/architecture.md`
 
 ---
 
@@ -80,17 +76,14 @@ Review the Todo app implementation for:
 
 ---
 
-### Step 5: QA Testing / 步骤 5：质量测试
+### Step 5: Testing / 步骤 5：测试
 
-```bash
-/qa-test http://localhost:3000
-Test the Todo app functionality:
+手动或自动化测试 Todo 应用功能：
 - Add task / 添加任务
 - Edit task / 编辑任务
 - Delete task / 删除任务
 - Mark complete / 标记完成
 - Filter tasks / 筛选任务
-```
 
 **Output / 输出**: Test report with any bugs found / 测试报告及发现的错误
 

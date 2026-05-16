@@ -19,15 +19,8 @@ Available commands / 可用命令:
 
 ```
 /brainstorm        - Product ideation / 产品构思
-/ceo-review        - Strategic review / 战略审视
-/arch-design       - Architecture design / 架构设计
 /code-review       - Code review / 代码审查
-/qa-test           - QA testing / 质量测试
-/security          - Security audit / 安全审计
 /ship              - Ship code / 发布代码
-/deploy            - Deploy verification / 部署验证
-/monitor           - Production monitoring / 生产监控
-/retro             - Weekly retro / 周复盘
 
 /careful           - Safety mode / 安全模式
 /freeze            - Scope lock / 范围锁定

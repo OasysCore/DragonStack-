@@ -154,15 +154,8 @@ execute_skill() {
         "$skill_script" $args
         local exit_code=$?
     else
-        # Try alternative naming
-        skill_script="$SCRIPT_DIR/skills/${skill_name}/${skill_name}.sh"
-        if [ -f "$skill_script" ]; then
-            "$skill_script" $args
-            local exit_code=$?
-        else
-            echo -e "${RED}❌ Skill not found: ${skill_name}${NC}"
-            return 1
-        fi
+        echo -e "${RED}❌ Skill not found: ${skill_name} (${skill_script})${NC}"
+        return 1
     fi
     
     # Complete TaskRun
